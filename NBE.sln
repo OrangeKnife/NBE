@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderSystemDX", "RenderSystemDX\RenderSystemDX.vcxproj", "{9CBBC80F-572E-44E3-A693-75AFDDBE1B19}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D4D602A3-7788-46D4-AEF3-0AE14888A722} = {D4D602A3-7788-46D4-AEF3-0AE14888A722}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_Astar", "Sample_Astar\Sample_Astar.vcxproj", "{93DEB920-19E7-43C6-B340-FBAEAE34D85E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CBBC80F-572E-44E3-A693-75AFDDBE1B19} = {9CBBC80F-572E-44E3-A693-75AFDDBE1B19}
+		{C0E5A567-B003-418A-98FB-E068FC9B4654} = {C0E5A567-B003-418A-98FB-E068FC9B4654}
+		{D4D602A3-7788-46D4-AEF3-0AE14888A722} = {D4D602A3-7788-46D4-AEF3-0AE14888A722}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_Mesh", "Sample_Mesh\Sample_Mesh.vcxproj", "{6BE1DEAA-8408-4825-984F-2023F50C3B12}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CBBC80F-572E-44E3-A693-75AFDDBE1B19} = {9CBBC80F-572E-44E3-A693-75AFDDBE1B19}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_BSP", "BSP\BSP.vcxproj", "{63B553FD-74A9-4414-BDEC-5EBE1CF32C45}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CBBC80F-572E-44E3-A693-75AFDDBE1B19} = {9CBBC80F-572E-44E3-A693-75AFDDBE1B19}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NBE", "NBE\NBE.vcxproj", "{D4D602A3-7788-46D4-AEF3-0AE14888A722}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RendererGL", "RendererGL\RendererGL.vcxproj", "{C0E5A567-B003-418A-98FB-E068FC9B4654}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D4D602A3-7788-46D4-AEF3-0AE14888A722} = {D4D602A3-7788-46D4-AEF3-0AE14888A722}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_StaticMesh", "Sample_StaticMesh\StaticMesh.vcxproj", "{AB7C578D-2BCE-4ABF-9740-C1EF50121011}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CBBC80F-572E-44E3-A693-75AFDDBE1B19}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9CBBC80F-572E-44E3-A693-75AFDDBE1B19}.Debug|Win32.Build.0 = Debug|Win32
+		{9CBBC80F-572E-44E3-A693-75AFDDBE1B19}.Release|Win32.ActiveCfg = Release|Win32
+		{9CBBC80F-572E-44E3-A693-75AFDDBE1B19}.Release|Win32.Build.0 = Release|Win32
+		{93DEB920-19E7-43C6-B340-FBAEAE34D85E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{93DEB920-19E7-43C6-B340-FBAEAE34D85E}.Debug|Win32.Build.0 = Debug|Win32
+		{93DEB920-19E7-43C6-B340-FBAEAE34D85E}.Release|Win32.ActiveCfg = Release|Win32
+		{93DEB920-19E7-43C6-B340-FBAEAE34D85E}.Release|Win32.Build.0 = Release|Win32
+		{6BE1DEAA-8408-4825-984F-2023F50C3B12}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6BE1DEAA-8408-4825-984F-2023F50C3B12}.Debug|Win32.Build.0 = Debug|Win32
+		{6BE1DEAA-8408-4825-984F-2023F50C3B12}.Release|Win32.ActiveCfg = Release|Win32
+		{6BE1DEAA-8408-4825-984F-2023F50C3B12}.Release|Win32.Build.0 = Release|Win32
+		{63B553FD-74A9-4414-BDEC-5EBE1CF32C45}.Debug|Win32.ActiveCfg = Debug|Win32
+		{63B553FD-74A9-4414-BDEC-5EBE1CF32C45}.Debug|Win32.Build.0 = Debug|Win32
+		{63B553FD-74A9-4414-BDEC-5EBE1CF32C45}.Release|Win32.ActiveCfg = Release|Win32
+		{63B553FD-74A9-4414-BDEC-5EBE1CF32C45}.Release|Win32.Build.0 = Release|Win32
+		{D4D602A3-7788-46D4-AEF3-0AE14888A722}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D4D602A3-7788-46D4-AEF3-0AE14888A722}.Debug|Win32.Build.0 = Debug|Win32
+		{D4D602A3-7788-46D4-AEF3-0AE14888A722}.Release|Win32.ActiveCfg = Release|Win32
+		{D4D602A3-7788-46D4-AEF3-0AE14888A722}.Release|Win32.Build.0 = Release|Win32
+		{C0E5A567-B003-418A-98FB-E068FC9B4654}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C0E5A567-B003-418A-98FB-E068FC9B4654}.Debug|Win32.Build.0 = Debug|Win32
+		{C0E5A567-B003-418A-98FB-E068FC9B4654}.Release|Win32.ActiveCfg = Release|Win32
+		{C0E5A567-B003-418A-98FB-E068FC9B4654}.Release|Win32.Build.0 = Release|Win32
+		{AB7C578D-2BCE-4ABF-9740-C1EF50121011}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AB7C578D-2BCE-4ABF-9740-C1EF50121011}.Debug|Win32.Build.0 = Debug|Win32
+		{AB7C578D-2BCE-4ABF-9740-C1EF50121011}.Release|Win32.ActiveCfg = Release|Win32
+		{AB7C578D-2BCE-4ABF-9740-C1EF50121011}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,24 @@
+﻿Build started 10/19/2014 10:26:30 AM.
+     1>Project "D:\DATA\Projects\Effects11\Effects11_2013.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\Binary /I.\Inc /Zi /nologo /W4 /WX- /O2 /Oi /Oy- /GL /D _WIN7_PLATFORM_UPDATE /D WIN32 /D NDEBUG /D _WINDOWS /D _LIB /D D3DXFX_LARGEADDRESS_HANDLE /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Yc"pchfx.h" /Fp"Bin\Desktop_2013\Win32\Release\Effects11.pch" /Fo"Bin\Desktop_2013\Win32\Release\\" /Fd"Bin\Desktop_2013\Win32\Release\Effects11.pdb" /Gd /TP /analyze- /errorReport:prompt  d3dxGlobal.cpp
+         d3dxGlobal.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\Binary /I.\Inc /Zi /nologo /W4 /WX- /O2 /Oi /Oy- /GL /D _WIN7_PLATFORM_UPDATE /D WIN32 /D NDEBUG /D _WINDOWS /D _LIB /D D3DXFX_LARGEADDRESS_HANDLE /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Yu"pchfx.h" /Fp"Bin\Desktop_2013\Win32\Release\Effects11.pch" /Fo"Bin\Desktop_2013\Win32\Release\\" /Fd"Bin\Desktop_2013\Win32\Release\Effects11.pdb" /Gd /TP /analyze- /errorReport:prompt  EffectAPI.cpp EffectLoad.cpp EffectNonRuntime.cpp EffectReflection.cpp EffectRuntime.cpp
+         EffectAPI.cpp
+         EffectLoad.cpp
+         EffectNonRuntime.cpp
+         EffectReflection.cpp
+         EffectRuntime.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"Bin\Desktop_2013\Win32\Release\Effects11.lib" /NOLOGO /LTCG Bin\Desktop_2013\Win32\Release\d3dxGlobal.obj
+         Bin\Desktop_2013\Win32\Release\EffectAPI.obj
+         Bin\Desktop_2013\Win32\Release\EffectLoad.obj
+         Bin\Desktop_2013\Win32\Release\EffectNonRuntime.obj
+         Bin\Desktop_2013\Win32\Release\EffectReflection.obj
+         Bin\Desktop_2013\Win32\Release\EffectRuntime.obj
+         Effects11_2013.vcxproj -> D:\DATA\Projects\Effects11\Bin\Desktop_2013\Win32\Release\Effects11.lib
+     1>Done Building Project "D:\DATA\Projects\Effects11\Effects11_2013.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.48

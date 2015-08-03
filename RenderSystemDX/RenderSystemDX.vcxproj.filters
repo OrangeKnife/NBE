@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{be2564b6-f109-49e5-943a-2ed2ec82af8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{5e96c0fc-a2e3-445b-8232-a56c7d783d6b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\DXRequirements.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Dx11DeviceManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DXTypes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShaderHLSL.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RendererDX11.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Dx11DeviceManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderHLSL.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RendererDX11.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
