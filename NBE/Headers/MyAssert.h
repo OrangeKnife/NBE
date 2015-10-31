@@ -1,6 +1,5 @@
 #pragma once
 #ifdef _DEBUG
-#include "NBE.h"
 
 #if defined(_WIN32) || defined(WIN32)
 
@@ -8,10 +7,10 @@
 
 #define myassert(exp)\
 	if(!(exp))MyAssert::Msg(__FILE__,__LINE__,#exp);
-
+#include <string>
 namespace NBE
 {
-	class NBE_API MyAssert
+	class __declspec(dllexport) MyAssert
 	{
 	public:
 		static void Msg(char* file, int line, const char* str)

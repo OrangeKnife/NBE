@@ -27,6 +27,12 @@
 using namespace NBE;
 namespace NBEANIMATOIN
 {
+	
+	void aTestCallBack(void* p)
+	{
+
+	}
+
 	RenderInfo* Game::loadRenderInfo(const String& cfgname)
 	{
 		cfg.loadConfig(cfgname);
@@ -145,6 +151,23 @@ namespace NBEANIMATOIN
 			root->addAChindNode(virgil->objectVec->at(i)->meshObjecNode);//attachObject(virgil->objectVec->at(i));
 			 
 		}
+
+		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this, nullptr);
+		NEventHub<NEvent_Key>::getPtr()->removeEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this);
+		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this, nullptr);
+		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this, nullptr);
+		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this, nullptr);
+		NEventHub<NEvent_Key>::getPtr()->Fire(NEvent_Key());
+		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
+		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
+		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
+		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
+		NEventHub<NEvent_Key>::getPtr()->FireAllQueuedEvents();
+	
+		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<&aTestCallBack>(NEvent_Key(), this);
+		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
+		NEventHub<NEvent_Key>::getPtr()->FireAllQueuedEvents();
+		NEventHub<NEvent_Key>::getPtr()->removeEventCallBack<&aTestCallBack>(NEvent_Key());
 		 
 	}
 
@@ -205,8 +228,7 @@ namespace NBEANIMATOIN
 		m_startFrameTime = m_timer.GetSystemClocks();
 		m_timer.PreciseWaitUntill(m_nextUpdateTime);
 		m_nextUpdateTime = m_timer.GetSystemClocks()  + m_timer.getDesireColocsPerFrame();
-
-		/*
+		
 		if (m_pRenderer->isActive())
 		{
 			std::for_each(begin(m_inputVec),end(m_inputVec),[&](Input* input){
@@ -242,13 +264,13 @@ namespace NBEANIMATOIN
 			}
 
 			m_renderQueue.pop_front();
-		}*/
+		}
 
 		//m_pRenderer->applyTexture(generalShader, "diftex", NULL, -1);
 		//m_pRenderer->drawIndex(0, 0, 0, 0);
 
 
-		//m_pRenderer->swapBuff(true);
+		m_pRenderer->swapBuff(true);
 	}
 
 	 

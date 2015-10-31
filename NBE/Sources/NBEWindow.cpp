@@ -7,7 +7,7 @@ namespace NBE
 		registerClass(h);
 
 		DWORD style, exStyle;
-		RECT _windowRect = { 0, 0, ri->width, ri->height };
+		RECT _windowRect = { 0, 0, LONG(ri->width), LONG(ri->height) };
 
 		if (ri->fullScreen)
 		{

@@ -48,6 +48,7 @@
 #include "Mouse.h"
 #include "KeyBoard.h"
 
+#include "EventHub.h"
 
 using namespace NBE;
 namespace NBEANIMATOIN
@@ -82,6 +83,12 @@ namespace NBEANIMATOIN
  
  
 		void exit();
+
+
+		void handleKeyEvent(void*) 
+		{
+		}
+
 	private: 
 		Config cfg;
 		//HINSTANCE m_rendererDLL;
@@ -106,5 +113,6 @@ namespace NBEANIMATOIN
 		std::list<Node*> m_renderQueue;
 
 		uint generalShader;
+
 	};
 }

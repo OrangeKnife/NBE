@@ -2,6 +2,7 @@
 #define uint unsigned int
 #include <vector>
 #include "Vertex.h"
+#include "NBE.h"
 namespace NBE
 {
     enum ATTRI

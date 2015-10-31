@@ -115,6 +115,15 @@
     <ClInclude Include="Headers\DataTypes.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Constant.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\EventHub.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\NEvent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -162,6 +171,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Headers\Mesh.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\EventHub.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

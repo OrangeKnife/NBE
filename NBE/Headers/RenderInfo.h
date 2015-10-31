@@ -3,8 +3,8 @@ namespace NBE
 {
 	struct NBE_API RenderInfo
     {
-        int width;
-        int height;
+        unsigned int width;
+		unsigned int height;
 
         bool fullScreen;
         char type;
