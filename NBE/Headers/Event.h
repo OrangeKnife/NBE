@@ -1,33 +1,26 @@
 #pragma once
-#include "NBE.h"
 namespace NBE
 {
-    enum EventType
-    {
-        NOEVENT = 0,
-        MOUSE_MOVE,
-		MOUSE_LEFTDRAG,
-		MOUSE_RIGHTDRAG,
-		MOUSE_MIDDLEDRAG,
-        MOUSE_BUTTON_DOWN,
-        MOUSE_BUTTON_PRESS,
-        MOUSE_BUTTON_RELEASE,
-        MOUSE_WHEEL,
-        KEY_DOWN,
-        KEY_PRESS,
-		KEY_CHAR,
-        KEY_RELEASE
-    };
+	struct NEvent
+	{
+		NEvent(){}
+		virtual ~NEvent() {}
+	};
 
-    class NBE_API Event
-    {
-    public:
-        Event(EventType _t):type(_t)
-        {}
-        virtual ~Event()
-        {}
-        EventType type;
-    };
-
-
+	struct NEvent_Key : NEvent
+	{
+		enum NEvent_Key_Type {
+			KEY_NONE = 0,
+			KEY_DOWN,
+			KEY_UP,
+			KEY_PRESSED //down and up
+		};
+		int KeyValue;
+		NEvent_Key_Type KeyType;
+		NEvent_Key(int v = 0, NEvent_Key_Type t = KEY_NONE) : KeyValue(v), KeyType(t) {}
+		bool operator==(NEvent_Key& rh)
+		{
+			return KeyValue == rh.KeyValue && KeyType == rh.KeyType;
+		}
+	};
 }
