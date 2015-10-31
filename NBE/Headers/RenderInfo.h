@@ -9,7 +9,7 @@ namespace NBE
         bool fullScreen;
         char type;
 
-        wchar_t title[64];
-        wchar_t className[64];
+		TCHAR  title[64];
+		TCHAR  className[64];
     };
 }

@@ -46,16 +46,16 @@ namespace NBEANIMATOIN
 		}
 		//get the wchar_t str to initialize window
 		str = cfg.getInfo("title");
-		wchar_t* w_str = TypeCast::charToWchar(str.c_str());
-		size_t w_len = str.size();
-		wcscpy_s(rdinfo->title,w_len+1,w_str);
-		delete w_str;
+		TCHAR* t_str = TypeCast::charToTCHAR(str.c_str());
+		size_t t_sz = (str.size() + 1) * sizeof(TCHAR);
+		memcpy_s(rdinfo->title,t_sz,t_str, t_sz);
+		delete t_str;
 
 		str = cfg.getInfo("className");
-		w_str = TypeCast::charToWchar(str.c_str());
-		w_len = str.size();
-		wcscpy_s(rdinfo->className,w_len+1,w_str);
-		delete w_str;
+		t_str = TypeCast::charToTCHAR(str.c_str());
+		t_sz = (str.size() + 1) * sizeof(TCHAR);
+		memcpy_s(rdinfo->className,t_sz,t_str, t_sz);
+		delete t_str;
 		m_rdInfo = rdinfo;
 		return rdinfo;
 	}
@@ -66,8 +66,7 @@ namespace NBEANIMATOIN
 		m_startFrameTime(0),
 		root(nullptr)
 	{
-
-		RenderInfo* rdinfo = loadRenderInfo(L"config.ini");
+		RenderInfo* rdinfo = loadRenderInfo(TEXT("config.ini"));
 
 		switch (rdinfo->type)
 		{
@@ -79,16 +78,15 @@ namespace NBEANIMATOIN
 			break;
 		}
 		
-
 		textureMgr = TextureManager::getInstancePtr();
 		textureMgr->initialize(m_pRenderer.get());
-		textureMgr->LoadFromFile(L"default-alpha.png",L"Default");
+		textureMgr->LoadFromFile(TEXT("default-alpha.png"),TEXT("Default"));
 		shaderMgr = ShaderManager::getInstancePtr();
 		shaderMgr->initialize(m_pRenderer.get());
 
 
  
-		root = new Node(L"root",vec3f(),Matrix4f::Identity());
+		root = new Node(TEXT("root"),vec3f(),Matrix4f::Identity());
 
 		currentState = INGAME;
 
@@ -100,12 +98,12 @@ namespace NBEANIMATOIN
 
 
   
-		generalShader = shaderMgr->loadShader(L"Shader\\general","PTNC");
+		generalShader = shaderMgr->loadShader(TEXT("Shader\\general"),"PTNC");
  
 
 		//test
 		/*
-		RenderObject* map = new RenderObject(String(L"Square"));
+		RenderObject* map = new RenderObject(TEXT("Square"));
 		map->vbo = (Vertex*) new PTNC_Vertex[4];
 		PTNC_Vertex* tempArray = new PTNC_Vertex[4];
 		tempArray[0] = (PTNC_Vertex(vec3f(0,0,0),vec2f(0,0),vec3f(0,1,0),vec4f(1,1,1,1)));
@@ -123,7 +121,7 @@ namespace NBEANIMATOIN
 		map->ibo.push_back(2);map->ibo.push_back(3);map->ibo.push_back(0);
 
 		TexMap* texbackground = new TexMap();
-		texbackground->texId = 0;// textureMgr->LoadFromFile(L"scenes\\darktile.jpg", L"BGTex")->textureIdx;
+		texbackground->texId = 0;// textureMgr->LoadFromFile(TEXT("scenes\\darktile.jpg"), L"BGTex")->textureIdx;
 		texbackground->texMapSlot = Diffuse;
 
 		string ss("BGMat");
@@ -139,7 +137,7 @@ namespace NBEANIMATOIN
 		root->attachObject(map);
  */
 		
-		Mesh* virgil = MeshManager::getInstancePtr()->loadMeshFromFile(L"scenes\\virgil.n3d");
+		Mesh* virgil = MeshManager::getInstancePtr()->loadMeshFromFile(TEXT("scenes\\virgil.n3d"));
 		for(uint i = 0; i < virgil->objectVec->size(); ++i)
 		{
 			m_pRenderer->createVBO(virgil->objectVec->at(i),sizeof(PTNC_Vertex),generalShader,"PTNC");
@@ -208,7 +206,7 @@ namespace NBEANIMATOIN
 		m_timer.PreciseWaitUntill(m_nextUpdateTime);
 		m_nextUpdateTime = m_timer.GetSystemClocks()  + m_timer.getDesireColocsPerFrame();
 
-
+		/*
 		if (m_pRenderer->isActive())
 		{
 			std::for_each(begin(m_inputVec),end(m_inputVec),[&](Input* input){
@@ -218,7 +216,7 @@ namespace NBEANIMATOIN
 		}
 
 		m_pCamera->updateViewMatrix();
-
+		
 		float color[4] = {0.5f,0.6f,0.7f,0.1f}; 
 		m_pRenderer->clearColorBuffer(color);
 		m_pRenderer->clearDepthBuffer(1.0);
@@ -244,13 +242,13 @@ namespace NBEANIMATOIN
 			}
 
 			m_renderQueue.pop_front();
-		}
+		}*/
 
 		//m_pRenderer->applyTexture(generalShader, "diftex", NULL, -1);
 		//m_pRenderer->drawIndex(0, 0, 0, 0);
 
 
-		m_pRenderer->swapBuff(true);
+		//m_pRenderer->swapBuff(true);
 	}
 
 	 
@@ -336,7 +334,7 @@ namespace NBEANIMATOIN
 	 
 	void Game::initCamera(float asp){
 		//camera
-		m_pCamera.reset(new Camera(String(L"cam1")));
+		m_pCamera.reset(new Camera(TEXT("cam1")));
 
 		m_pCamera->setPosition(vec3f(0,0,350));
 		m_pCamera->updateViewMatrix();

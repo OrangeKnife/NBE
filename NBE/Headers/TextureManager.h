@@ -17,7 +17,7 @@ namespace NBE
 
         void DestroyTexture( Texture*& pTexture );
         void DestroyTexture( unsigned int id);
-		Texture* LoadFromFile(const string& szTexturePath, const string& uniName);
+		//Texture* LoadFromFile(const string& szTexturePath, const string& uniName);
         Texture* LoadFromFile(const String& szTexturePath, const String& uniName);
         
         void UpdateTexture(Texture*& pTexture, void* data, unsigned int width, unsigned int height,

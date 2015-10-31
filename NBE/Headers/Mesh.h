@@ -113,7 +113,7 @@ namespace NBE
 
 		MeshObject(string& nm)
 			:RenderObject(TypeCast::stringToString(nm))
-			,meshObjecNode(new Node(TypeCast::stringToString(nm) + L"_meshObjNode"))
+			,meshObjecNode(new Node(TypeCast::stringToString(nm) + TEXT("_meshObjNode")))
 			,localTMAnim(new KeyFrameContainer()),parent(NULL),isSkinMesh(false)
 			,skeletonVec(NULL),children(NULL)
 		{}
@@ -202,7 +202,7 @@ namespace NBE
 	public:
 		MeshManager();
 		~MeshManager();
-		Mesh* loadMeshFromFile(wchar_t* fileName);// mesh   in the vec
+		Mesh* loadMeshFromFile(const String& fullPath);
 		//Mesh* loadMeshFromFile_stream(wchar_t* fileName);
 	private:
 		vector<Mesh*> m_pMeshVec;//store all the mesh data

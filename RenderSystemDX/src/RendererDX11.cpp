@@ -111,7 +111,7 @@ namespace NBE
 		m_context->OMSetRenderTargets(1, &rtview, m_dsview);
 		currentRT = 0;//initialize
 
-		ID3D11BlendState* g_pBlendState = NULL;
+		m_BlendState = NULL;
 
 		D3D11_BLEND_DESC BlendState;
 		ZeroMemory(&BlendState, sizeof(D3D11_BLEND_DESC));
@@ -127,10 +127,10 @@ namespace NBE
 		BlendState.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		BlendState.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 		
-		m_currentDevice->CreateBlendState(&BlendState, &g_pBlendState);
+		m_currentDevice->CreateBlendState(&BlendState, &m_BlendState);
 
 		UINT sampleMask = 0xffffffff;
-		m_context->OMSetBlendState(g_pBlendState, NULL, sampleMask);
+		m_context->OMSetBlendState(m_BlendState, NULL, sampleMask);
 
 		D3D11_RASTERIZER_DESC rasterizerstate = { D3D11_FILL_SOLID, D3D11_CULL_BACK, true, 0, 0, 0, true, false, false, false };
 		HV(m_currentDevice->CreateRasterizerState(&rasterizerstate, &m_rs));
@@ -192,6 +192,7 @@ namespace NBE
 		if (m_dsview)m_dsview->Release();
 		if (m_rs)m_rs->Release();
 		//		if(m_sampler)m_sampler->Release();
+		if (m_BlendState)m_BlendState->Release();
 
 
 		releaseVec(m_ibuffVec);

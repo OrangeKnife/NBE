@@ -54,9 +54,8 @@ Mesh* MeshManager::loadMeshFromFile_stream(wchar_t* fileName)
 }
 */
 
-Mesh* MeshManager::loadMeshFromFile(wchar_t* fileName)
+Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 {
-	String fullPath = String(fileName);
 	String currentPath = fullPath.substr(0,fullPath.find_last_of('\\')+1);
 
 	Mesh* ms = NULL;
@@ -78,7 +77,7 @@ Mesh* MeshManager::loadMeshFromFile(wchar_t* fileName)
 	ms->boneVec = boneVec;
 
 
-	ifstream* fs = FileIO::readFile(wstring(fileName)); 
+	ifstream* fs = FileIO::readFile(fullPath);
 	char* buffer = new char[128];//this buffer used to read tags
 	auto readAline =
 		[&]()
@@ -127,7 +126,7 @@ Mesh* MeshManager::loadMeshFromFile(wchar_t* fileName)
 						auto findParent = ms->getObjInMeshByName(buffer);
 						if(  findParent == NULL )
 						{
-							throw NException(MeshLoadError,String(L"MeshObject has a unknown parent"));
+							throw NException(MeshLoadError,String(TEXT("MeshObject has a unknown parent")));
 						}
 						else
 						{

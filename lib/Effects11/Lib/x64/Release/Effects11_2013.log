@@ -1,24 +1,38 @@
-﻿Build started 10/19/2014 10:26:38 AM.
-     1>Project "D:\DATA\Projects\Effects11\Effects11_2013.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 10/30/2015 8:34:37 PM.
+     1>Project "C:\Ha\Effects11\Effects11_2013.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\Binary /I.\Inc /Zi /nologo /W4 /WX- /O2 /Oi /GL /D _WIN7_PLATFORM_UPDATE /D WIN32 /D NDEBUG /D _WINDOWS /D _LIB /D D3DXFX_LARGEADDRESS_HANDLE /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Yc"pchfx.h" /Fp"Bin\Desktop_2013\x64\Release\Effects11.pch" /Fo"Bin\Desktop_2013\x64\Release\\" /Fd"Bin\Desktop_2013\x64\Release\Effects11.pdb" /Gd /TP /errorReport:prompt  d3dxGlobal.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I.\Binary /I.\Inc /Zi /nologo /W4 /WX- /O2 /Oi /GL /D _WIN7_PLATFORM_UPDATE /D WIN32 /D NDEBUG /D _WINDOWS /D _LIB /D D3DXFX_LARGEADDRESS_HANDLE /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Yc"pchfx.h" /Fp"Bin\Desktop_2013\x64\Release\Effects11.pch" /Fo"Bin\Desktop_2013\x64\Release\\" /Fd"Bin\Desktop_2013\x64\Release\Effects11.pdb" /Gd /TP /errorReport:prompt  d3dxGlobal.cpp
          d3dxGlobal.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\Binary /I.\Inc /Zi /nologo /W4 /WX- /O2 /Oi /GL /D _WIN7_PLATFORM_UPDATE /D WIN32 /D NDEBUG /D _WINDOWS /D _LIB /D D3DXFX_LARGEADDRESS_HANDLE /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Yu"pchfx.h" /Fp"Bin\Desktop_2013\x64\Release\Effects11.pch" /Fo"Bin\Desktop_2013\x64\Release\\" /Fd"Bin\Desktop_2013\x64\Release\Effects11.pdb" /Gd /TP /errorReport:prompt  EffectAPI.cpp EffectLoad.cpp EffectNonRuntime.cpp EffectReflection.cpp EffectRuntime.cpp
+     1>c:\ha\effects11\EffectVariable.inl(917): warning C4458: declaration of 'pTopLevelEntity' hides class member
+         c:\ha\effects11\EffectVariable.inl(1225): note: see declaration of 'D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>::pTopLevelEntity'
+         c:\ha\effects11\EffectVariable.inl(915): note: while compiling class template member function 'ID3DX11EffectVariable *D3DX11Effects::TVariable<D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>>::GetElement(uint32_t)'
+         c:\ha\effects11\EffectVariable.inl(4620): note: see reference to class template instantiation 'D3DX11Effects::TVariable<D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>>' being compiled
+         c:\ha\effects11\EffectVariable.inl(4925): note: see reference to class template instantiation 'D3DX11Effects::TSamplerVariable<D3DX11Effects::TVariable<D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>>>' being compiled
+     1>c:\ha\effects11\EffectVariable.inl(890): warning C4458: declaration of 'pTopLevelEntity' hides class member
+         c:\ha\effects11\EffectVariable.inl(1225): note: see declaration of 'D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>::pTopLevelEntity'
+         c:\ha\effects11\EffectVariable.inl(886): note: while compiling class template member function 'ID3DX11EffectVariable *D3DX11Effects::TVariable<D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>>::GetMemberBySemantic(LPCSTR)'
+     1>c:\ha\effects11\EffectVariable.inl(861): warning C4458: declaration of 'pTopLevelEntity' hides class member
+         c:\ha\effects11\EffectVariable.inl(1225): note: see declaration of 'D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>::pTopLevelEntity'
+         c:\ha\effects11\EffectVariable.inl(857): note: while compiling class template member function 'ID3DX11EffectVariable *D3DX11Effects::TVariable<D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>>::GetMemberByName(LPCSTR)'
+     1>c:\ha\effects11\EffectVariable.inl(833): warning C4458: declaration of 'pTopLevelEntity' hides class member
+         c:\ha\effects11\EffectVariable.inl(1225): note: see declaration of 'D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>::pTopLevelEntity'
+         c:\ha\effects11\EffectVariable.inl(830): note: while compiling class template member function 'ID3DX11EffectVariable *D3DX11Effects::TVariable<D3DX11Effects::TMember<ID3DX11EffectSamplerVariable>>::GetMemberByIndex(uint32_t)'
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I.\Binary /I.\Inc /Zi /nologo /W4 /WX- /O2 /Oi /GL /D _WIN7_PLATFORM_UPDATE /D WIN32 /D NDEBUG /D _WINDOWS /D _LIB /D D3DXFX_LARGEADDRESS_HANDLE /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Yu"pchfx.h" /Fp"Bin\Desktop_2013\x64\Release\Effects11.pch" /Fo"Bin\Desktop_2013\x64\Release\\" /Fd"Bin\Desktop_2013\x64\Release\Effects11.pdb" /Gd /TP /errorReport:prompt  EffectAPI.cpp EffectLoad.cpp EffectNonRuntime.cpp EffectReflection.cpp EffectRuntime.cpp
          EffectAPI.cpp
          EffectLoad.cpp
          EffectNonRuntime.cpp
          EffectReflection.cpp
          EffectRuntime.cpp
        Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"Bin\Desktop_2013\x64\Release\Effects11.lib" /NOLOGO /MACHINE:X64 /LTCG Bin\Desktop_2013\x64\Release\d3dxGlobal.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\Lib.exe /OUT:"Bin\Desktop_2013\x64\Release\Effects11.lib" /NOLOGO /MACHINE:X64 /LTCG Bin\Desktop_2013\x64\Release\d3dxGlobal.obj
          Bin\Desktop_2013\x64\Release\EffectAPI.obj
          Bin\Desktop_2013\x64\Release\EffectLoad.obj
          Bin\Desktop_2013\x64\Release\EffectNonRuntime.obj
          Bin\Desktop_2013\x64\Release\EffectReflection.obj
          Bin\Desktop_2013\x64\Release\EffectRuntime.obj
-         Effects11_2013.vcxproj -> D:\DATA\Projects\Effects11\Bin\Desktop_2013\x64\Release\Effects11.lib
-     1>Done Building Project "D:\DATA\Projects\Effects11\Effects11_2013.vcxproj" (Rebuild target(s)).
+         Effects11_2013.vcxproj -> C:\Ha\Effects11\Bin\Desktop_2013\x64\Release\Effects11.lib
+     1>Done Building Project "C:\Ha\Effects11\Effects11_2013.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.77
+Time Elapsed 00:00:01.82

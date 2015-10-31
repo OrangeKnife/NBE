@@ -25,12 +25,21 @@ namespace NBE
         {
             return memcmp("true",obj,4) == 0;
         }
+		static TCHAR* charToTCHAR(const char* obj)
+		{
+#ifdef UNICODE
+			return charToWchar(obj);
+#else
+			return obj;
+#endif
+		}
+
         static wchar_t* charToWchar(const char* obj)//create a new wchar_t pointer, take care
         {
             int len = (int)strlen(obj) + 1;//'\0'
             if (len > CHAR_TO_WCHAR_SIZE_MAX)
             {
-                throw NException(CharToWcharOverFlow, String(L"Type cast error: char to wchar over flow"));
+                throw NException(CharToWcharOverFlow, String(TEXT("Type cast error: char to wchar over flow")));
             }
             wchar_t* strWchar(new wchar_t[CHAR_TO_WCHAR_SIZE_MAX]);
             int w_Len = MultiByteToWideChar(CP_ACP, 0, obj, len, strWchar, CHAR_TO_WCHAR_SIZE_MAX);
@@ -38,11 +47,20 @@ namespace NBE
         }
 		static String stringToString(std::string& str)
 		{
-			wchar_t* tempWchar = charToWchar(str.c_str());
-			String rt(tempWchar);
-			delete tempWchar;
+#ifdef UNICODE
+			wchar_t* tempPointer = charToWchar(str.c_str());
+#else
+			const char* tempPointer = str.c_str();
+#endif
+			String rt(tempPointer);
+#ifdef UNICODE
+			delete tempPointer;
+#endif
 			return rt;
 		}
+
+
+		
     private:
         TypeCast();
         ~TypeCast();

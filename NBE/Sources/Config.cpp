@@ -21,7 +21,7 @@ namespace NBE
 		std::shared_ptr<std::ifstream> f( new std::ifstream(iniName,std::ios::binary) );
 		if (!f->is_open())
 		{
-			throw NException(ReadFileError, String(L"Fail to read ") + iniName);
+			throw NException(ReadFileError, String(TEXT("Fail to read ")) + iniName);
 		}
 		
 		//lambda
@@ -60,7 +60,7 @@ namespace NBE
 			return m_infoMap[std::string(strName)];
 		}
 
-		throw NException(CantFindConfigItem,String(L"Fail to find config item: ") + String(TypeCast::charToWchar(strName)));
+		throw NException(CantFindConfigItem,String(TEXT("Fail to find config item: ")) + TypeCast::stringToString(std::string(strName)));
 	}
 
 	const std::string& Config::getInfo(const std::string& strName)
@@ -70,6 +70,6 @@ namespace NBE
 			return m_infoMap[strName];
 		}
 
-		throw NException(CantFindConfigItem,String(L"Fail to find config item: ") + String(TypeCast::charToWchar(strName.c_str())));
+		throw NException(CantFindConfigItem,String(TEXT("Fail to find config item: ")) + TypeCast::stringToString(std::string(strName)));
 	}
 }

@@ -102,6 +102,8 @@ namespace NBE
 		std::shared_ptr<NBEWindow> m_win;
 		std::vector<RenderTarget> m_rtVec;//render target
 
+		ID3D11BlendState* m_BlendState;
+
 	};
 
 

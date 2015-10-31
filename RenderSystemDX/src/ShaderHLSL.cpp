@@ -17,7 +17,7 @@ namespace NBE
 	{
 		//ID3D11Device* device = reinterpret_cast<RendererDX11*>(renderer)->getDeviceMgr()->getDevice(0);
 		wstring fxName = wstring(shaderName);
-		fxName = fxName.append(L".fx");
+		fxName = fxName.append(TEXT(".fx"));
 
 		ID3D10Blob *fxblob = NULL, *errblob = NULL;
 		if(FAILED(D3DCompileFromFile(fxName.c_str(), NULL, NULL, "", "fx_5_0", 

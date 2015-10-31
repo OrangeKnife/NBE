@@ -11,12 +11,12 @@ namespace NBE
 	class FileIO
 	{
 	public:
-		static ifstream* FileIO::readFile( String& name )
+		static ifstream* FileIO::readFile(const String& name )
 		{
 			ifstream* f= new ifstream(name,ios::binary);
 			if (!f->is_open())
 			{
-				throw NException(ReadFileError, (name + String(L" failed")) );
+				throw NException(ReadFileError, (name + String(TEXT(" failed"))) );
 			}
 			return f;
 		}

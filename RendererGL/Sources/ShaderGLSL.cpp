@@ -11,7 +11,7 @@ namespace NBE
 	{
 		
 		char* source = nullptr;
-		String shaderFileName = String(name).append(L".vs");
+		String shaderFileName = String(name).append(TEXT(".vs"));
  
 		FileIO::readFileIntoStr(shaderFileName,source);
 		verSh = glCreateShader(GL_VERTEX_SHADER);
@@ -29,10 +29,10 @@ namespace NBE
 		glGetShaderInfoLog (verSh, length, &length, log);
 		if (success == GL_FALSE)
 		{
-			throw NException(VertexShaderError, String(L"Create vertex shader error"));
+			throw NException(VertexShaderError, String(TEXT("Create vertex shader error")));
 		}
  
-		shaderFileName = String(name).append(L".ps");
+		shaderFileName = String(name).append(TEXT(".ps"));
 		FileIO::readFileIntoStr(shaderFileName,source);
  
 		fragSh = glCreateShader(GL_FRAGMENT_SHADER);
@@ -49,7 +49,7 @@ namespace NBE
 		glGetShaderInfoLog (fragSh, length, &length, log);
 		if (success == GL_FALSE)
 		{
-			throw NException(PixelShaderError, String(L"Create pixel shader error"));
+			throw NException(PixelShaderError, String(TEXT("Create pixel shader error")));
 		}
 		m_program = glCreateProgram();
  
@@ -63,7 +63,7 @@ namespace NBE
 		glGetProgramInfoLog (m_program, length, &length, log);
 		if (success == GL_FALSE)
 		{
-			throw NException(LinkShaderError, String(L"GL: Link shader error"));
+			throw NException(LinkShaderError, String(TEXT("GL: Link shader error")));
 		}
 
 		 
@@ -77,7 +77,7 @@ namespace NBE
 	{
 		
 		char* source = nullptr;
-		String shaderFileName = String(name_vs).append(L".vs");
+		String shaderFileName = String(name_vs).append(TEXT(".vs"));
  
 		FileIO::readFileIntoStr(shaderFileName,source);
 		verSh = glCreateShader(GL_VERTEX_SHADER);
@@ -95,10 +95,10 @@ namespace NBE
 		glGetShaderInfoLog (verSh, length, &length, log);
 		if (success == GL_FALSE)
 		{
-			throw NException(VertexShaderError, String(L"Create vertex shader error"));
+			throw NException(VertexShaderError, String(TEXT("Create vertex shader error")));
 		}
  
-		shaderFileName = String(name_ps).append(L".ps");
+		shaderFileName = String(name_ps).append(TEXT(".ps"));
 		FileIO::readFileIntoStr(shaderFileName,source);
  
 		fragSh = glCreateShader(GL_FRAGMENT_SHADER);
@@ -115,7 +115,7 @@ namespace NBE
 		glGetShaderInfoLog (fragSh, length, &length, log);
 		if (success == GL_FALSE)
 		{
-			throw NException(PixelShaderError, String(L"Create pixel shader error"));
+			throw NException(PixelShaderError, String(TEXT("Create pixel shader error")));
 		}
 		m_program = glCreateProgram();
  
@@ -131,7 +131,7 @@ namespace NBE
 		glGetProgramInfoLog (m_program, length, &length, log);
 		if (success == GL_FALSE)
 		{
-			throw NException(LinkShaderError, String(L"GL: Link shader error"));
+			throw NException(LinkShaderError, String(TEXT("GL: Link shader error")));
 		}		 
 	}
 

@@ -7,7 +7,7 @@ namespace NBE
 		:m_name(name),m_pos(pos),m_localRotMatrix(Matrix3f::Identity()),m_localTM(transf),m_parent(nullptr),m_flag(NodeInit)
 	{}
 	Node::Node()
-		:m_name(L""),m_pos(vec3f()),m_localTM(Matrix4f::Identity()),m_parent(nullptr),m_flag(NodeInit)
+		:m_name(TEXT("")),m_pos(vec3f()),m_localTM(Matrix4f::Identity()),m_parent(nullptr),m_flag(NodeInit)
 	{}
 	Node::~Node()
 	{

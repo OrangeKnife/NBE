@@ -32,7 +32,7 @@ namespace NBE
 		Texture* newTex = new Texture(String(),uniName,width,height,format,type);
 
 		//bool powerOftwo = isPowerOfTwo(width) && isPowerOfTwo(height);
-		newTex->textureIdx = m_currentRenderer->createTexture(L"", pRGBATexels, newTex->width, newTex->height, newTex->format, newTex->type, true);
+		newTex->textureIdx = m_currentRenderer->createTexture(TEXT(""), pRGBATexels, newTex->width, newTex->height, newTex->format, newTex->type, true);
 		
 		m_loadedTextures.push_back(newTex);
 
@@ -41,11 +41,11 @@ namespace NBE
 		return newTex;
 	}
 
-	Texture* TextureManager::LoadFromFile(const string& szTexturePath, const string& uniName)
-	{
-		return LoadFromFile(TypeCast::stringToString(const_cast<string&>(szTexturePath))
-			,TypeCast::stringToString(const_cast<string&>(uniName)));
-	}
+	//Texture* TextureManager::LoadFromFile(const string& szTexturePath, const string& uniName)
+	//{
+	//	return LoadFromFile(TypeCast::stringToString(const_cast<string&>(szTexturePath))
+	//		,TypeCast::stringToString(const_cast<string&>(uniName)));
+	//}
 	Texture* TextureManager::LoadFromFile(const String& szTexturePath, const String& uniName)
 	{
 		REQUIRES(m_currentRenderer);
@@ -65,7 +65,7 @@ namespace NBE
 
 		if(IL_NO_ERROR != ilGetError())
 		{
-			throw NException(TextureDevilError, String(L"IL Load From File Error:\n") + szTexturePath);
+			throw NException(TextureDevilError, String(TEXT("IL Load From File Error:\n")) + szTexturePath);
 		}
 
 		Texture* newTex = new Texture(szTexturePath,uniName);

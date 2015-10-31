@@ -37,7 +37,7 @@ namespace NBE
 
 		if (!m_hwnd)
 		{
-			throw NException(CreateWindowError, String(L"Create Window Error"));
+			throw NException(CreateWindowError, String(TEXT("Create Window Error")));
 		}
 
 

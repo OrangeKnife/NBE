@@ -25,7 +25,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		//shared_ptr<char> tempChar(TypeCast::intToChar( e.ErrorCode() ));
 		//::MessageBoxA(nullptr, tempChar.get(),"Error Code",MB_OK|MB_ICONERROR);
 
-		::MessageBoxW(nullptr,e.getInfo().c_str(),L"Exception",MB_OK|MB_ICONERROR); 
+		::MessageBox(nullptr,e.getInfo().c_str(),TEXT("Exception"),MB_OK|MB_ICONERROR);
 	}
 
 	return 0;

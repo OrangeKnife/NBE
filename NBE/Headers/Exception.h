@@ -1,5 +1,5 @@
 #pragma once
-#define NException(A,B) NBEException(A,B,__FILE__,__LINE__)
+#define NException(A,B) NBEException((A),(B),__FILE__,__LINE__)
 namespace NBE
 {
     //remember define your own 
@@ -30,7 +30,7 @@ namespace NBE
     class NBEException
     {
     public:
-        NBEException(int errorCode, String& sth = String(L""), char* file = nullptr, int line = 0)
+        NBEException(int errorCode, String& sth = String(), char* file = nullptr, int line = 0)
 			:m_errorCode(errorCode)
 			,something(sth)
         {}
