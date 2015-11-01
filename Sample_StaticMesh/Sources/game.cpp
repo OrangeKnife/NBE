@@ -7,7 +7,6 @@
 
 #include "Vector3.h"
 #include "Vector2.h"
-#include "Listener.h"
 #include "Input.h"
 
 
@@ -23,16 +22,11 @@
 #include "RendererGL.h"
 #include "RendererDX11.h"
 #include "Mesh.h"
- 
+#include <algorithm>
+
 using namespace NBE;
 namespace NBEANIMATOIN
 {
-	
-	void aTestCallBack(void* p)
-	{
-
-	}
-
 	RenderInfo* Game::loadRenderInfo(const String& cfgname)
 	{
 		cfg.loadConfig(cfgname);
@@ -83,29 +77,29 @@ namespace NBEANIMATOIN
 			m_pRenderer.reset(createDX11(rdinfo, h));
 			break;
 		}
-		
+
 		textureMgr = TextureManager::getInstancePtr();
 		textureMgr->initialize(m_pRenderer.get());
-		textureMgr->LoadFromFile(TEXT("default-alpha.png"),TEXT("Default"));
+		textureMgr->LoadFromFile(TEXT("default-alpha.png"), TEXT("Default"));
 		shaderMgr = ShaderManager::getInstancePtr();
 		shaderMgr->initialize(m_pRenderer.get());
 
 
- 
-		root = new Node(TEXT("root"),vec3f(),Matrix4f::Identity());
+
+		root = new Node(TEXT("root"), vec3f(), Matrix4f::Identity());
 
 		currentState = INGAME;
 
-	 
 
-		initCamera( static_cast<float>(rdinfo->width)/rdinfo->height );
+
+		initCamera(static_cast<float>(rdinfo->width) / rdinfo->height);
 
 		initInput();
 
 
-  
-		generalShader = shaderMgr->loadShader(TEXT("Shader\\general"),"PTNC");
- 
+
+		generalShader = shaderMgr->loadShader(TEXT("Shader\\general"), "PTNC");
+
 
 		//test
 		/*
@@ -132,7 +126,7 @@ namespace NBEANIMATOIN
 
 		string ss("BGMat");
 		Material* mtl = new Material(ss);
-		 
+
 		mtl->texMapVec->push_back(texbackground);
 		mtl->shader = generalShader;
 		Batch* b = new Batch(mtl, 0, map->ibo.size());//this is the drawing info
@@ -142,33 +136,24 @@ namespace NBEANIMATOIN
 		m_pRenderer->createIBO(map);
 		root->attachObject(map);
  */
-		
+
 		Mesh* virgil = MeshManager::getInstancePtr()->loadMeshFromFile(TEXT("scenes\\virgil.n3d"));
-		for(uint i = 0; i < virgil->objectVec->size(); ++i)
+		for (uint i = 0; i < virgil->objectVec->size(); ++i)
 		{
-			m_pRenderer->createVBO(virgil->objectVec->at(i),sizeof(PTNC_Vertex),generalShader,"PTNC");
+			m_pRenderer->createVBO(virgil->objectVec->at(i), sizeof(PTNC_Vertex), generalShader, "PTNC");
 			m_pRenderer->createIBO(virgil->objectVec->at(i));
 			root->addAChindNode(virgil->objectVec->at(i)->meshObjecNode);//attachObject(virgil->objectVec->at(i));
-			 
+
 		}
 
-		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this, nullptr);
-		NEventHub<NEvent_Key>::getPtr()->removeEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this);
-		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this, nullptr);
-		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this, nullptr);
-		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<Game, &Game::handleKeyEvent>(NEvent_Key(), this, nullptr);
-		NEventHub<NEvent_Key>::getPtr()->Fire(NEvent_Key());
-		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
-		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
-		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
-		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
-		NEventHub<NEvent_Key>::getPtr()->FireAllQueuedEvents();
-	
-		NEventHub<NEvent_Key>::getPtr()->addEventCallBack<&aTestCallBack>(NEvent_Key(), this);
-		NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key());
-		NEventHub<NEvent_Key>::getPtr()->FireAllQueuedEvents();
-		NEventHub<NEvent_Key>::getPtr()->removeEventCallBack<&aTestCallBack>(NEvent_Key());
-		 
+		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key('W', NEvent_Key::KEY_DOWN), this, (void*)('W'));
+		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key('A', NEvent_Key::KEY_DOWN), this, (void*)('A'));
+		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key('S', NEvent_Key::KEY_DOWN), this, (void*)('S'));
+		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key('D', NEvent_Key::KEY_DOWN), this, (void*)('D'));
+		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key('C', NEvent_Key::KEY_DOWN), this, (void*)('C'));
+		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key(VK_SPACE, NEvent_Key::KEY_DOWN), this, (void*)(VK_SPACE));
+
+
 	}
 
 	Game::~Game()
@@ -178,11 +163,7 @@ namespace NBEANIMATOIN
 
 		MeshManager::deleteInstance();
 
-		for(auto it = m_inputVec.begin(); it!=m_inputVec.end();)
-		{
-			delete *it;
-			it = m_inputVec.erase(it);
-		}
+
 		delete root;  
 	}
 
@@ -231,10 +212,9 @@ namespace NBEANIMATOIN
 		
 		if (m_pRenderer->isActive())
 		{
-			std::for_each(begin(m_inputVec),end(m_inputVec),[&](Input* input){
-				input->update();//read events
-				input->handleAllEvents();
-			});
+			for (size_t i = 0; i < Input::getTotalInputNum(); ++i)
+				Input::getInput(i)->update();
+			
 		}
 
 		m_pCamera->updateViewMatrix();
@@ -274,36 +254,16 @@ namespace NBEANIMATOIN
 	}
 
 	 
-	 
+	
 
-	void Game::handleEvent(Event* e)
+	void Game::handleMovementEvent(void* p)
 	{
-		 
+
+		m_pCamera->handleKeyDown(int(p));
+		
 	}
 
-	void Game::handleKeyDown(int key)
-	{
-		/*
-		vec3f impuse;
-		switch(key)
-		{
-		case 'W':impuse.z -=  .10f;break;
-		case 'S':impuse.z +=  .10f;break;
-		case 'A':impuse.x -=  .10f;break;
-		case 'D':impuse.x +=  .10f;break;
-		case VK_SPACE:impuse.y += 0.1f;break;
-		case 'C':impuse.y -= 0.1f;break;
 
-		}
-		m_pCamera->applyImpulse(impuse);
-		*/
-
-	}
-
-	void Game::handleKeyRelease(int key)
-	{
-	 
-	}
 
 	//btVector3 Game::getRayTo(float x,float y){
 	//	//float top = 1.f;
@@ -367,14 +327,13 @@ namespace NBEANIMATOIN
 
 	void Game::initInput(){
 		//control
-		mouse = new Mouse();
-		mouse->calculateCenter( m_pRenderer->getWindow()->getHWND());
-		mouse->registerListener(this);
-		keyboard = new KeyBoard();
-		keyboard->registerListener(this);
-		m_inputVec.push_back(mouse);
-		m_inputVec.push_back(keyboard);
-	}
+		auto mouse = new Mouse();
+		auto window_hwnd = m_pRenderer->getWindow()->getHWND();
+		mouse->init(window_hwnd);
+		mouse->calculateCenter(window_hwnd);
+
+		new KeyBoard();
+		}
  
 	void Game::drawObj(RenderObject* obj, Matrix4f& transform){
 

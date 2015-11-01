@@ -26,13 +26,12 @@
     <ClInclude Include="Headers\DataTypes.h" />
     <ClInclude Include="Headers\DllLoader.h" />
     <ClInclude Include="Headers\Error.h" />
-    <ClInclude Include="Headers\Event.h" />
     <ClInclude Include="Headers\EventHub.h" />
     <ClInclude Include="Headers\Exception.h" />
     <ClInclude Include="Headers\File.h" />
     <ClInclude Include="Headers\Input.h" />
     <ClInclude Include="Headers\KeyBoard.h" />
-    <ClInclude Include="Headers\Listener.h" />
+    <ClInclude Include="Headers\Log.h" />
     <ClInclude Include="Headers\Matrix.h" />
     <ClInclude Include="Headers\Mesh.h" />
     <ClInclude Include="Headers\Mouse.h" />
@@ -41,7 +40,7 @@
     <ClInclude Include="Headers\NBEMath.h" />
     <ClInclude Include="Headers\NBETimer.h" />
     <ClInclude Include="Headers\NBEWindow.h" />
-    <ClInclude Include="Headers\NEvent.h" />
+    <ClInclude Include="Headers\Event.h" />
     <ClInclude Include="Headers\Node.h" />
     <ClInclude Include="Headers\Object.h" />
     <ClInclude Include="Headers\Quaternion.h" />
@@ -65,7 +64,6 @@
     <ClCompile Include="Headers\Mesh.cpp" />
     <ClCompile Include="Sources\Camera.cpp" />
     <ClCompile Include="Sources\Config.cpp" />
-    <ClCompile Include="Sources\CustomEvent.cpp" />
     <ClCompile Include="Sources\EventHub.cpp" />
     <ClCompile Include="Sources\Input.cpp" />
     <ClCompile Include="Sources\KeyBoard.cpp" />

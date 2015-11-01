@@ -9,7 +9,7 @@ namespace NBE
         MAX_BUTTONS
     };
 
-    class NBE_API Mouse:public Input
+    class NBE_API Mouse : public Input
     {
     public:
         Mouse();
@@ -17,7 +17,9 @@ namespace NBE
 
         void init( HWND hwnd );
         virtual void update();
+#if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
         virtual void processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+#endif
         unsigned int getNumOfButtons() const;
         vec2f getPosition();
         bool didGoUp( MouseButton button) const;

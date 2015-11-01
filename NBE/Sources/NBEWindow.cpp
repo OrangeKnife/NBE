@@ -103,7 +103,10 @@ namespace NBE
 
 	void NBEWindow::procMsg(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
-		//InputManager::Inst()->ProcessMessages(hWnd,message,wParam,lParam); 
+		for (size_t i = 0; i < Input::getTotalInputNum(); ++i)
+		{
+			Input::getInput(i)->processMessages(hWnd, message, wParam, lParam);
+		}
 	}
 	 
 }

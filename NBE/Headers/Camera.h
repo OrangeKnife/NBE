@@ -2,11 +2,10 @@
 #include "Object.h"
 namespace NBE
 {
-	class NBE_API Camera: public Listener, public Object
+	class NBE_API Camera: public Object
 	{
 	public:
 		Camera(const String camName);
-		virtual void handleEvent(Event* e);
 		void handleKeyDown(int key);
 		void setPosition(const vec3f& position){m_pos = position;}
 		//void setDirection(const vec3f& direction){m_direction = direction;}
@@ -42,5 +41,7 @@ namespace NBE
 		Matrix4f m_projection;
 
 		Node* m_lookAtNode;
+
+		const float KEY_BOARD_IMPULSE_SCALAR = 1.f;
 	};
 }

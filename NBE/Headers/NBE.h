@@ -15,7 +15,9 @@ typedef std::string String;
 
 #pragma warning(disable:4251)
 
-
+#if 1//USE_LOG
+#include "Log.h"
+#endif
 
 //pre declare
 namespace NBE

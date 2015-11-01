@@ -1,8 +1,8 @@
 #pragma once
 #include "Constant.h"
-#include "NEvent.h"
 #include "MyAssert.h"
 #include <list>
+#include <memory>
 namespace NBE
 {
 	struct NEvent;
@@ -55,7 +55,7 @@ namespace NBE
 		
 		static NEventHub* getPtr()
 		{
-			static shared_ptr< NEventHub<T_eventData> > instance( new NEventHub<T_eventData>() );
+			static std::shared_ptr< NEventHub<T_eventData> > instance( new NEventHub<T_eventData>() );
 			return instance.get();
 		}
 
@@ -166,4 +166,6 @@ namespace NBE
 		const size_t maxEventNum;
 	};
 
+#define ADDCLASSCALLBACK(eventDataName, className, functionName, eventData, handler, handlerDataPtr) \
+	NEventHub<##eventDataName>::getPtr()->addEventCallBack<##className, &##className::##functionName>(eventData,handler,handlerDataPtr);
 }

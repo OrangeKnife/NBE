@@ -1,6 +1,7 @@
 #pragma once
-
-#include <unordered_map>
+#if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
+#include <windows.h>
+#endif
 namespace NBE
 {
     class NBE_API KeyBoard: public Input
@@ -9,7 +10,9 @@ namespace NBE
         KeyBoard();
         virtual ~KeyBoard();
         virtual void update();
+#if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
         virtual void processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+#endif
         inline bool isKeyDown(int virtualKey)
         {
             return m_keyMap[virtualKey];
@@ -25,6 +28,7 @@ namespace NBE
             m_keyMap[virtualKey] = true;
         }
     private:
-        std::unordered_map<int, bool> m_keyMap; 
+		bool m_keyMap[256] = {0};
+        //std::unordered_map<int, bool> ; 
     };
 }

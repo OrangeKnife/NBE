@@ -3,6 +3,9 @@
 #include <cassert>
 using namespace std;
 using namespace NBEANIMATOIN;
+
+Game* GameInstance;
+
 int APIENTRY _tWinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPTSTR lpCmdLine,
@@ -16,7 +19,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	try
 	{
-		shared_ptr<Game> GameInstance(new Game(hInstance));
+		GameInstance = new Game(hInstance);
 		GameInstance->run();
 	}
 	catch(NBEException& e)
@@ -24,9 +27,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		//inform user
 		//shared_ptr<char> tempChar(TypeCast::intToChar( e.ErrorCode() ));
 		//::MessageBoxA(nullptr, tempChar.get(),"Error Code",MB_OK|MB_ICONERROR);
-
+		delete GameInstance;
 		::MessageBox(nullptr,e.getInfo().c_str(),TEXT("Exception"),MB_OK|MB_ICONERROR);
 	}
 
+	delete GameInstance;
 	return 0;
 }

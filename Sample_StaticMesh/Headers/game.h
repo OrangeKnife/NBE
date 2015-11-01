@@ -22,7 +22,6 @@
 #include "Singleton.h"
 #include "TextureManager.h"
 #include "Camera.h"
-#include "Listener.h"
 #include "Input.h"
 
 #include "NBETimer.h"
@@ -53,7 +52,7 @@
 using namespace NBE;
 namespace NBEANIMATOIN
 {
-	class Game:public Listener
+	class Game
 	{
 	protected:
 		enum GAMESTATE
@@ -68,7 +67,7 @@ namespace NBEANIMATOIN
 		~Game();
 		RenderInfo* loadRenderInfo(const String& cfgname);
 		void run();
-		void initData();
+
 		void initCamera(float asp);
 		void initInput();
 
@@ -76,18 +75,13 @@ namespace NBEANIMATOIN
 		void drawBatch(Batch* bat, Matrix4f& worldMat);
 		void drawObj(RenderObject* obj, Matrix4f& transform);
 		 
-		void handleEvent(Event* e);
-		void handleKeyDown(int key);
-		void handleKeyRelease(int key);
+		void handleMovementEvent(void*);
+		
 		 
  
  
 		void exit();
 
-
-		void handleKeyEvent(void*) 
-		{
-		}
 
 	private: 
 		Config cfg;
@@ -96,13 +90,10 @@ namespace NBEANIMATOIN
 		std::vector<RenderObject*> m_renderObjVec;
 		RenderInfo* m_rdInfo;
 
-		Mouse* mouse;
-		KeyBoard* keyboard;
 		ShaderManager* shaderMgr;
 		TextureManager* textureMgr;
 
-		std::shared_ptr<Camera> m_pCamera;
-		std::vector<Input*> m_inputVec;
+		std::shared_ptr<Camera> m_pCamera;//main camera
 		//timing
 		clocks m_startFrameTime;
 		clocks m_nextUpdateTime;

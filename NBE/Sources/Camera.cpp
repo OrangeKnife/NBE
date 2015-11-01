@@ -1,6 +1,5 @@
 #include "Matrix.h"
 #include "NBE.h"
-#include "Listener.h"
 
 #include "Camera.h"
 #include "NBEMath.h"
@@ -17,36 +16,8 @@ namespace NBE
 
 	{}
 
-	void Camera::handleEvent(Event* e)
-	{
-		/*
-		switch(e->type)
-		{
-		case MOUSE_MOVE:
-			rotate(reinterpret_cast<MouseEvent*>(e)->deltaMove);
-			applyImpulse(vec3f());//apply the rotation only
-			break;
-		//case MOUSE_BUTTONDOWN:
-		//	break;
-		//case MOUSE_BUTTON_PRESS:
-		//	break;
-		//case MOUSE_BUTTON_RELEASE:
-		//	break;
-		//	//key
-		//case KEY_RELEASE:
-		//	break;
-		//case KEY_PRESS:
-		//	break;
-		case KEY_DOWN:
-			handleKeyDown(reinterpret_cast<KeyEvent*>(e)->virtualKey);
-			break;
-		}
-		*/
-	}
-
 	void Camera::handleKeyDown(int key)
 	{
-		/*
 		vec3f impuse(0,0,0);
 		switch(key)
 		{
@@ -58,7 +29,6 @@ namespace NBE
 		case 'C':impuse.y -= KEY_BOARD_IMPULSE_SCALAR;break;
 		}
 		applyImpulse(impuse);
-		*/
 	}
 	void Camera::applyImpulse(const vec3f& impulse)
 	{

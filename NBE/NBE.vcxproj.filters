@@ -16,9 +16,6 @@
     <ClInclude Include="Headers\DllLoader.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Event.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Headers\Exception.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -29,9 +26,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Headers\KeyBoard.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\Listener.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Matrix.h">
@@ -121,7 +115,10 @@
     <ClInclude Include="Headers\EventHub.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\NEvent.h">
+    <ClInclude Include="Headers\Event.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Log.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -138,9 +135,6 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Config.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\CustomEvent.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Input.cpp">

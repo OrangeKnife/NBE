@@ -3,12 +3,9 @@
 #include "Vector3.h"
 #include "CustomEvent.h"
 
-
-#include "Vector3.h"
-#include "Vector2.h"
-#include "Listener.h"
 #include "Input.h"
 #include "Mouse.h"
+#include "EventHub.h"
 
 namespace NBE
 {
@@ -20,6 +17,7 @@ namespace NBE
 		}
 		wheelDelta = 0;
 	}
+
 	Mouse::~Mouse()
 	{}
 	void Mouse::init(HWND hwnd)
@@ -69,24 +67,22 @@ namespace NBE
 
 		if(isDown(RIGHT_BUTTON) && (mouseDelta.x != 0 || mouseDelta.y != 0))
 		{
-			addEvent(new MouseEvent(MOUSE_RIGHTDRAG,mouseDelta,x,y)); //move event
+			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_RIGHTDRAG,mouseDelta,x,y)); //drag event
 			::SetCursorPos(m_lastX,m_lastY);
 		}
 		else if(isDown(MIDDLE_BUTTON) && (mouseDelta.x != 0 || mouseDelta.y != 0))
 		{
-			addEvent(new MouseEvent(MOUSE_MIDDLEDRAG,mouseDelta * 0.1f,x,y)); //move event
+			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_MIDDLEDRAG, mouseDelta, x, y)); //drag event
 			::SetCursorPos(m_lastX,m_lastY);
 		}
-#if 0
 		else if(isDown(LEFT_BUTTON) && (mouseDelta.x != 0 || mouseDelta.y != 0))
 		{
-			addEvent(new MouseEvent(MOUSE_LEFTDRAG,mouseDelta  ,x,y)); //move event
+			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_LEFTDRAG, mouseDelta, x, y)); //drag event
 			::SetCursorPos(m_lastX,m_lastY);
 		}
-#endif
 		else if(mouseDelta.x != 0 || mouseDelta.y != 0)
 		{
-			addEvent(new MouseEvent(MOUSE_MOVE,mouseDelta,x,y)); //move event
+			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_MOVE, mouseDelta, x, y)); //move event
 		}
 		
 		
@@ -101,13 +97,13 @@ namespace NBE
 		{
 			if(m_buttonStates[ i ] && !m_lastButtonStates[ i ])
 			{
-				 addEvent(new MouseEvent(MOUSE_BUTTON_PRESS,i,x,y)); // press button once
+				NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_PRESS, i, x, y));
 			}
 		
 			if(m_buttonStates[ i ])
-				addEvent(new MouseEvent(MOUSE_BUTTON_DOWN,i,x,y));
+				NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_DOWN, i, x, y));
 			else if(!m_buttonStates[ i ] && m_lastButtonStates[ i ])
-				addEvent(new MouseEvent(MOUSE_BUTTON_RELEASE,i,x,y));
+				NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_RELEASE, i, x, y));
 
 
 			m_lastButtonStates[i] = m_buttonStates[i];
@@ -116,10 +112,12 @@ namespace NBE
 
 		//wheel
 		if(wheelDelta!=0){
-			addEvent(new MouseEvent(MOUSE_WHEEL,vec3f(wheelDelta,0,0),x,y));
+			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_WHEEL, vec3f(wheelDelta, 0, 0), x, y));
 			wheelDelta = 0;
 		}
 	}
+
+#if defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
 	void Mouse::processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		int bt = -1;
@@ -160,6 +158,7 @@ namespace NBE
 
 		   
 	}
+#endif
 
 	unsigned int Mouse::getNumOfButtons() const
 	{
