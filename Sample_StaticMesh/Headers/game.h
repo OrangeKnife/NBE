@@ -32,17 +32,6 @@
 #include "Node.h" 
 #include "NBEWindow.h"
 
-#ifdef _DEBUG
-#include <sstream>
-#define trace( text )\
-{\
-	std::wstringstream stringBuilder;\
-	stringBuilder << text << std::endl;\
-	OutputDebugString(stringBuilder.str().c_str());\
-}
-#else
-#define trace( text )
-#endif
 
 #include "Mouse.h"
 #include "KeyBoard.h"

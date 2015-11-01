@@ -64,7 +64,6 @@
     <ClCompile Include="Headers\Mesh.cpp" />
     <ClCompile Include="Sources\Camera.cpp" />
     <ClCompile Include="Sources\Config.cpp" />
-    <ClCompile Include="Sources\EventHub.cpp" />
     <ClCompile Include="Sources\Input.cpp" />
     <ClCompile Include="Sources\KeyBoard.cpp" />
     <ClCompile Include="Sources\Mouse.cpp" />

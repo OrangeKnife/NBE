@@ -167,8 +167,5 @@
     <ClCompile Include="Headers\Mesh.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\EventHub.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
