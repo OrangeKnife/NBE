@@ -37,6 +37,7 @@
 #include "KeyBoard.h"
 
 #include "EventHub.h"
+#include "CustomEvent.h"
 
 using namespace NBE;
 namespace NBEANIMATOIN
@@ -64,7 +65,7 @@ namespace NBEANIMATOIN
 		void drawBatch(Batch* bat, Matrix4f& worldMat);
 		void drawObj(RenderObject* obj, Matrix4f& transform);
 		 
-		void handleMovementEvent(void*);
+		void handleMovementEvent(NEvent_Key* eventData, void* p);
 		
 		 
  

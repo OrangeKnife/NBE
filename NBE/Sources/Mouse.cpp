@@ -67,22 +67,22 @@ namespace NBE
 
 		if(isDown(RIGHT_BUTTON) && (mouseDelta.x != 0 || mouseDelta.y != 0))
 		{
-			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_RIGHTDRAG,mouseDelta,x,y)); //drag event
+			NEventHub<NEvent_Mouse>::getPtr()->fire(NEvent_Mouse(NEvent_Mouse::MOUSE_RIGHTDRAG,mouseDelta,x,y)); //drag event
 			::SetCursorPos(m_lastX,m_lastY);
 		}
 		else if(isDown(MIDDLE_BUTTON) && (mouseDelta.x != 0 || mouseDelta.y != 0))
 		{
-			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_MIDDLEDRAG, mouseDelta, x, y)); //drag event
+			NEventHub<NEvent_Mouse>::getPtr()->fire(NEvent_Mouse(NEvent_Mouse::MOUSE_MIDDLEDRAG, mouseDelta, x, y)); //drag event
 			::SetCursorPos(m_lastX,m_lastY);
 		}
 		else if(isDown(LEFT_BUTTON) && (mouseDelta.x != 0 || mouseDelta.y != 0))
 		{
-			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_LEFTDRAG, mouseDelta, x, y)); //drag event
+			NEventHub<NEvent_Mouse>::getPtr()->fire(NEvent_Mouse(NEvent_Mouse::MOUSE_LEFTDRAG, mouseDelta, x, y)); //drag event
 			::SetCursorPos(m_lastX,m_lastY);
 		}
 		else if(mouseDelta.x != 0 || mouseDelta.y != 0)
 		{
-			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_MOVE, mouseDelta, x, y)); //move event
+			NEventHub<NEvent_Mouse>::getPtr()->fire(NEvent_Mouse(NEvent_Mouse::MOUSE_MOVE, mouseDelta, x, y)); //move event
 		}
 		
 		
@@ -97,13 +97,13 @@ namespace NBE
 		{
 			if(m_buttonStates[ i ] && !m_lastButtonStates[ i ])
 			{
-				NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_PRESS, i, x, y));
+				NEventHub<NEvent_Mouse>::getPtr()->fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_PRESS, i, x, y));
 			}
 		
 			if(m_buttonStates[ i ])
-				NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_DOWN, i, x, y));
+				NEventHub<NEvent_Mouse>::getPtr()->fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_DOWN, i, x, y));
 			else if(!m_buttonStates[ i ] && m_lastButtonStates[ i ])
-				NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_RELEASE, i, x, y));
+				NEventHub<NEvent_Mouse>::getPtr()->fire(NEvent_Mouse(NEvent_Mouse::MOUSE_BUTTON_RELEASE, i, x, y));
 
 
 			m_lastButtonStates[i] = m_buttonStates[i];
@@ -112,7 +112,7 @@ namespace NBE
 
 		//wheel
 		if(wheelDelta!=0){
-			NEventHub<NEvent_Mouse>::getPtr()->Fire(NEvent_Mouse(NEvent_Mouse::MOUSE_WHEEL, vec3f(wheelDelta, 0, 0), x, y));
+			NEventHub<NEvent_Mouse>::getPtr()->fire(NEvent_Mouse(NEvent_Mouse::MOUSE_WHEEL, vec3f(wheelDelta, 0, 0), x, y));
 			wheelDelta = 0;
 		}
 	}

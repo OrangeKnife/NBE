@@ -256,7 +256,7 @@ namespace NBEANIMATOIN
 	 
 	
 
-	void Game::handleMovementEvent(void* p)
+	void Game::handleMovementEvent(NEvent_Key* eventData, void* p)
 	{
 
 		m_pCamera->handleKeyDown(int(p));

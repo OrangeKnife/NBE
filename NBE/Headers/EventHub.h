@@ -5,8 +5,6 @@
 #include <memory>
 namespace NBE
 {
-	struct NEvent;
-
 	template <typename T_eventData>
 	class NEventHub
 	{
@@ -15,40 +13,40 @@ namespace NBE
 			CallBackData(T_eventData& _eventData, void* _handlerDataPointer)
 				:eventData(_eventData), handlerDataPointer(_handlerDataPointer){}
 
-			template <typename className, void (className::*Function)(void*)>
-			static inline void ClassMethodStub(void* instance, void* argPointer)
+			template <typename className, void (className::*Function)(T_eventData*, void*)>
+			static inline void ClassMethodStub(void* instance, T_eventData* eventdata, void* argPointer)
 			{
-				return (static_cast<className*>(instance)->*Function)(argPointer);
+				return (static_cast<className*>(instance)->*Function)(eventdata,argPointer);
 			}
 
-			template <class className, void (className::*Function)(void*)>
+			template <class className, void (className::*Function)(T_eventData*, void*)>
 			void Bind(className* instance)
 			{
 				handler = instance;
 				handlerFunc = &ClassMethodStub<className, Function>;
 			}
 
-			template <void(*Function)(void*)>
-			static inline void FunctionStub(void*, void* argPointer)
+			template <void(*Function)(T_eventData*, void*)>
+			static inline void FunctionStub(void*, T_eventData* eventdata, void* argPointer)
 			{
-				return (Function)(argPointer);
+				return (Function)(eventdata, argPointer);
 			}
 
-			template <void(*Function)(void*)>
+			template <void(*Function)(T_eventData*, void*)>
 			void Bind()
 			{
 				handler = nullptr;
 				handlerFunc = &FunctionStub<Function>;
 			}
 
-			void call()
+			void inline call(T_eventData* eventdata)
 			{
-				handlerFunc(handler, handlerDataPointer);
+				handlerFunc(handler, eventdata, handlerDataPointer);
 			}
 
 			T_eventData eventData;
 			void* handler;
-			void (*handlerFunc)(void*, void*);
+			void (*handlerFunc)(void*, T_eventData* ,void*);
 			void* handlerDataPointer;
 		};
 	public:
@@ -71,7 +69,7 @@ namespace NBE
 				delete it;
 		}
 
-		template<typename className, typename void(className::*functionName)(void*)>
+		template<typename className, typename void(className::*functionName)(T_eventData* , void*)>
 		void addEventCallBack(T_eventData& eventData, className* handler, void* handlerDataPointer)
 		{
 			auto newCallback = new CallBackData(eventData, handlerDataPointer);
@@ -79,7 +77,7 @@ namespace NBE
 			callBacks.push_back(newCallback);
 		}
 
-		template<typename void(*functionName)(void*)>
+		template<typename void(*functionName)(T_eventData*,void*)>
 		void addEventCallBack(T_eventData& eventData, void* handlerDataPointer)
 		{
 			auto newCallback = new CallBackData(eventData, handlerDataPointer);
@@ -87,7 +85,7 @@ namespace NBE
 			callBacks.push_back(newCallback);
 		}
 
-		template<typename className, typename void(className::*functionName)(void*)>
+		template<typename className, typename void(className::*functionName)(T_eventData*, void*)>
 		void removeEventCallBack(T_eventData& eventData, className* handler)
 		{
 			for (auto it = callBacks.begin(); it != callBacks.end();)
@@ -104,7 +102,7 @@ namespace NBE
 			}
 		}
 
-		template<typename void(*functionName)(void*)>
+		template<typename void(*functionName)(T_eventData*, void*)>
 		void removeEventCallBack(T_eventData& eventData)
 		{
 			for (auto it = callBacks.begin(); it != callBacks.end();)
@@ -122,25 +120,25 @@ namespace NBE
 		}
 
 		
-		void Fire(T_eventData& eventData)
+		void fire(T_eventData& eventData)
 		{
 			for (auto &it : callBacks)
 			{
 				if ((it)->eventData == eventData)
 				{
-					(it)->call();
+					(it)->call(&eventData);
 				}
 			}
 		}
 
-		void QueueEvent(T_eventData& eventData)
+		void queueEvent(T_eventData& eventData)
 		{
 			myassert(head != (tail + 1) % maxEventNum);
 			buffer[tail] = eventData;
 			tail = (tail + 1) % maxEventNum;
 		}
 
-		void FireAllQueuedEvents()
+		void fireAllQueuedEvents()
 		{
 			if (head == tail) return;
 			for (;head != tail;)
@@ -149,7 +147,7 @@ namespace NBE
 				{
 					if ((it)->eventData == buffer[head])
 					{
-						(it)->call();
+						(it)->call(&buffer[head]);
 					}
 				}
 				 

@@ -19,12 +19,12 @@ namespace NBE
 		{
 			if (m_keyMap[i])
 			{
-				NEventHub<NEvent_Key>::getPtr()->QueueEvent(NEvent_Key(i, NEvent_Key::KEY_DOWN)); //key down event
+				NEventHub<NEvent_Key>::getPtr()->queueEvent(NEvent_Key(i, NEvent_Key::KEY_DOWN)); //key down event
 				//NLOG("here is : %d \n", i);
 			}
 		}
 
-		NEventHub<NEvent_Key>::getPtr()->FireAllQueuedEvents();
+		NEventHub<NEvent_Key>::getPtr()->fireAllQueuedEvents();
 		
 	}
 
@@ -36,16 +36,16 @@ namespace NBE
 		case WM_KEYDOWN:
 			if(!m_keyMap[(int)wParam]) 
 			{
-				NEventHub<NEvent_Key>::getPtr()->Fire(NEvent_Key((int)wParam, NEvent_Key::KEY_PRESSED)); //key pressed event
+				NEventHub<NEvent_Key>::getPtr()->fire(NEvent_Key((int)wParam, NEvent_Key::KEY_PRESSED)); //key pressed event
 			}
 			m_keyMap[(int)wParam] = true;
 			break;
 		case WM_KEYUP:
 			m_keyMap[(int)wParam] = false;
-			NEventHub<NEvent_Key>::getPtr()->Fire(NEvent_Key((int)wParam, NEvent_Key::KEY_UP)); //key up event
+			NEventHub<NEvent_Key>::getPtr()->fire(NEvent_Key((int)wParam, NEvent_Key::KEY_UP)); //key up event
 			break;
 		case WM_CHAR:
-			NEventHub<NEvent_Key>::getPtr()->Fire(NEvent_Key((int)wParam, NEvent_Key::KEY_CHAR)); //key pressed event
+			NEventHub<NEvent_Key>::getPtr()->fire(NEvent_Key((int)wParam, NEvent_Key::KEY_CHAR)); //key pressed event
 			break;
 		}
 		  
