@@ -9,6 +9,18 @@ namespace NBE
 	struct Vertex
 	{};
 
+	struct PT_Vertex:Vertex
+	{
+		PT_Vertex()
+		{}
+		PT_Vertex(float _x, float _z, float coord_x, float coord_y) :pos(_x, 0, _z), texcoord(coord_x, coord_y)
+		{}
+		PT_Vertex(unsigned int _x, unsigned int _z, vec2f _coord) :pos((float)_x, 0, (float)_z), texcoord(_coord)
+		{}
+		vec3f pos;
+		vec2f texcoord;
+	};
+
     struct PTN_Vertex:Vertex
     {
         vec3f pos;

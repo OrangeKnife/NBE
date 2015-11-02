@@ -9,16 +9,14 @@ namespace NBE
 
 	RenderObject::~RenderObject()
 	{
-		if(batchVec->size())
-		{
-			for(auto it = batchVec->begin(); it != batchVec->end();)
+		if (batchVec) {
+			for (size_t i = 0; i<batchVec->size(); ++i)
 			{
-				delete *it;
-				it = batchVec->erase(it);
+				delete (*batchVec)[i];
 			}
-			delete batchVec;
 		}
-		
+
+		delete batchVec;
 		deleteBufferObjectData();
 	}
 	void RenderObject::deleteBufferObjectData()

@@ -1,6 +1,6 @@
 #include <tchar.h>
 #include "game.h"
-#include <cassert>
+#include <windows.h>
 using namespace std;
 using namespace NBEANIMATOIN;
 

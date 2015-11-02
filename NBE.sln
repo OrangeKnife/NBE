@@ -22,6 +22,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_StaticMesh", "Sample
 		{D4D602A3-7788-46D4-AEF3-0AE14888A722} = {D4D602A3-7788-46D4-AEF3-0AE14888A722}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_GOAP", "Sample_GOAP\Sample_GOAP.vcxproj", "{64ACCA93-A82E-43A7-BB16-07527F80A531}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CBBC80F-572E-44E3-A693-75AFDDBE1B19} = {9CBBC80F-572E-44E3-A693-75AFDDBE1B19}
+		{C0E5A567-B003-418A-98FB-E068FC9B4654} = {C0E5A567-B003-418A-98FB-E068FC9B4654}
+		{D4D602A3-7788-46D4-AEF3-0AE14888A722} = {D4D602A3-7788-46D4-AEF3-0AE14888A722}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -44,6 +51,10 @@ Global
 		{AB7C578D-2BCE-4ABF-9740-C1EF50121011}.Debug|Win32.Build.0 = Debug|Win32
 		{AB7C578D-2BCE-4ABF-9740-C1EF50121011}.Release|Win32.ActiveCfg = Release|Win32
 		{AB7C578D-2BCE-4ABF-9740-C1EF50121011}.Release|Win32.Build.0 = Release|Win32
+		{64ACCA93-A82E-43A7-BB16-07527F80A531}.Debug|Win32.ActiveCfg = Debug|Win32
+		{64ACCA93-A82E-43A7-BB16-07527F80A531}.Debug|Win32.Build.0 = Debug|Win32
+		{64ACCA93-A82E-43A7-BB16-07527F80A531}.Release|Win32.ActiveCfg = Release|Win32
+		{64ACCA93-A82E-43A7-BB16-07527F80A531}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -128,13 +128,7 @@ namespace NBE
 			}
 			delete matVec;*/
 
-			if(batchVec){
-				for (size_t i =0; i<batchVec->size();++i)
-				{
-					delete (*batchVec)[i];
-				}
-				delete batchVec;
-			}
+
 
 			if(children){
 				for (size_t i =0; i<children->size();++i)

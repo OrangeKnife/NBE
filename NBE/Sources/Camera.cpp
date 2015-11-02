@@ -51,7 +51,9 @@ namespace NBE
 	}
 	const vec3f& Camera::setLocalRotation(const vec3f& rotation)
 	{
-		return m_localRot = rotation;
+		m_localRot = rotation;
+		m_rotationMatrix = Matrix3f::fromEulerAngles(m_localRot.x, m_localRot.y, m_localRot.z);
+		return m_localRot;
 	}
 	const vec3f& Camera::getDirection()
 	{
