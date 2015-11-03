@@ -17,6 +17,7 @@ namespace NBE
 		void rotateAround(const vec3f& change, const vec3f& pos, char degreeOrRadian=0);
 		const vec3f& getDirection();
 		
+		void update(double deltaTime);
 		void updateViewMatrix();
 		Matrix4f setProjection(float fov, float aspect,float znear, float zfar);
 

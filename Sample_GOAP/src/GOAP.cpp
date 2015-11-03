@@ -44,7 +44,7 @@ namespace NBE
 		return rdinfo;
 	}
 
-	GOAPapp::GOAPapp(HINSTANCE h):currentMapIdx(0),
+	GOAPapp::GOAPapp(HINSTANCE h) :currentMapIdx(0),
 		m_timer(NBETimer()),
 		m_nextUpdateTime(0),
 		m_startFrameTime(0),
@@ -126,7 +126,7 @@ namespace NBE
 	{
 		m_startFrameTime = m_timer.GetSystemClocks();
 		m_timer.PreciseWaitUntill(m_nextUpdateTime);
-		m_nextUpdateTime = m_timer.GetSystemClocks() + m_timer.getDesireColocsPerFrame();
+		m_nextUpdateTime = m_timer.GetSystemClocks() + m_timer.getDesireClocsPerFrame();
 
 		if (m_pRenderer->isActive())
 		{
@@ -140,55 +140,55 @@ namespace NBE
 		float color[4] = { 0.5f,0.6f,0.7f,0.1f };
 		m_pRenderer->clearColorBuffer(color);
 		m_pRenderer->clearDepthBuffer(1.0);
-		
+
 		m_pRenderer->applyShader(m_shaderID);
-		
-		m_pRenderer->applyMatrix(m_shaderID,"modelMat", Matrix4f::Identity());
-		m_pRenderer->applyMatrix(m_shaderID,"viewMat",m_pCamera->getViewMatrix());
-		m_pRenderer->applyMatrix(m_shaderID,"projMat", m_pCamera->getProjection());
+
+		m_pRenderer->applyMatrix(m_shaderID, "modelMat", Matrix4f::Identity());
+		m_pRenderer->applyMatrix(m_shaderID, "viewMat", m_pCamera->getViewMatrix());
+		m_pRenderer->applyMatrix(m_shaderID, "projMat", m_pCamera->getProjection());
 
 		//static auto defTex = texArray[3];
 
-		m_pRenderer->applyTexture(m_shaderID, "diftex", m_combinedTex ,0);
+		m_pRenderer->applyTexture(m_shaderID, "diftex", m_combinedTex, 0);
 
 		static auto pShader = ShaderManager::getInstancePtr()->getShaderByIdx(m_shaderID);
- 
- 
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 
 		auto currentMap = m_maps[currentMapIdx];
 
- 
+
 		//start!
 		static uint fcount = 0;
 		fcount++;
-		for (int i =0; i< (int)botVec.size() ; ++i)
+		for (int i = 0; i < (int)botVec.size(); ++i)
 		{
-			if(!botVec[i]->foundPlan )
+			if (!botVec[i]->foundPlan)
 			{
 				botVec[i]->updateExistenceByMap();
 				botVec[i]->foundPlan = botVec[i]->doPlanfinding();
 
 			}
 
-			if( !botVec[i]->foundPathToTargetNode && botVec[i]->currentPlan.size() > 0 )
+			if (!botVec[i]->foundPathToTargetNode && botVec[i]->currentPlan.size() > 0)
 			{
 				uint end;
-				if(botVec[i]->currentPlan.back()->needNodeType >= 0)
+				if (botVec[i]->currentPlan.back()->needNodeType >= 0)
 					end = currentMap->getAstarMapNodeByResourceType(botVec[i]->currentPlan.back()->needNodeType);
 				else
 					end = botVec[i]->currentMapNode;
 
-				botVec[i]->foundPathToTargetNode = doPathFinding(currentMap,botVec[i] ,end);
+				botVec[i]->foundPathToTargetNode = doPathFinding(currentMap, botVec[i], end);
 				if (botVec[i]->foundPathToTargetNode)
 				{
-					botVec[i]->posInPathNode = botVec[i]->pathNodes.size()-1 ;
+					botVec[i]->posInPathNode = botVec[i]->pathNodes.size() - 1;
 					botVec[i]->goToNodeAction = botVec[i]->currentPlan.back();
-					botVec[i]->currentPlan.pop_back();					
+					botVec[i]->currentPlan.pop_back();
 				}
 				else
 				{
@@ -197,91 +197,91 @@ namespace NBE
 			}
 
 			//rendering!!!
-			if(fcount == 20*500)
+			if (fcount == 20 * 500)
 			{
 				fcount = 0;
-				
-				float rdIdx = ((float)rand())/RAND_MAX * currentMap->nodesList.size();
+
+				float rdIdx = ((float)rand()) / RAND_MAX * currentMap->nodesList.size();
 				AstarMapNode& nd = currentMap->nodesList[(int)rdIdx];
-				if(nd.nodeType == EMPTY)
+				if (nd.nodeType == EMPTY)
 				{
-					nd. nodeType = WOLF;
-					currentMap->resource[WOLF]->push_back(Res((int)rdIdx,true));
-					currentMap->changeNodeTexInVBO( currentMap->nodesList[(int)rdIdx]);
+					nd.nodeType = WOLF;
+					currentMap->resource[WOLF]->push_back(Res((int)rdIdx, true));
+					currentMap->changeNodeTexInVBO(currentMap->nodesList[(int)rdIdx]);
 					clearAllBotsInfo();
-				}				
+				}
 			}
 
- 
 
 
 
-			if(fcount%10 == 0)
+
+			if (fcount % 10 == 0)
 			{
-				 int j = botVec[i]->posInPathNode-- ;
-				 if(j >= 0)
-				 {
+				int j = botVec[i]->posInPathNode--;
+				if (j >= 0)
+				{
 					uint ndidx = botVec[i]->pathNodes[j];
 					botVec[i]->currentMapNode = ndidx;
 
 					botVec[i]->currentMapNode_Type = currentMap->nodesList[ndidx].nodeType;
-					 
+
 					//botVec[i]->pathNodes.pop_back();
 
-					if (j > 0 )
+					if (j > 0)
 					{
-						currentMap->changeNodeTexInVBO( currentMap->nodesList[ndidx], botVec[i]->display);
-						m_pRenderer->updateVBO(currentMap->renderObj->vbo_id,currentMap->renderObj->vbo,0,currentMap->renderObj->VertexNum,sizeof(PT_Vertex));
+						currentMap->changeNodeTexInVBO(currentMap->nodesList[ndidx], botVec[i]->display);
+						m_pRenderer->updateVBO(currentMap->renderObj->vbo_id, currentMap->renderObj->vbo, 0, currentMap->renderObj->VertexNum, sizeof(PT_Vertex));
 
-					}					
+					}
 					else
 					{
-						 botVec[i]->current->act(botVec[i]->goToNodeAction);//change Aibot aistate
-						 botVec[i]->goToNodeAction = NULL;//action done
-						 botVec[i]->foundPathToTargetNode = false;//need to find next target node
+						botVec[i]->current->act(botVec[i]->goToNodeAction);//change Aibot aistate
+						botVec[i]->goToNodeAction = NULL;//action done
+						botVec[i]->foundPathToTargetNode = false;//need to find next target node
 
-						 if( botVec[i]->currentMapNode_Type == MONEY || botVec[i]->currentMapNode_Type == WOLF )
-						 {
-							 currentMap->removeResource(botVec[i]->currentMapNode_Type,ndidx);
-							 currentMap->nodesList[ndidx].nodeType = EMPTY;//set current node type = EMPTY, wipe it 
-							 clearAllBotsInfo();
-							 // map changed, re-find plan and path
-							
-						 }
+						if (botVec[i]->currentMapNode_Type == MONEY || botVec[i]->currentMapNode_Type == WOLF)
+						{
+							currentMap->removeResource(botVec[i]->currentMapNode_Type, ndidx);
+							currentMap->nodesList[ndidx].nodeType = EMPTY;//set current node type = EMPTY, wipe it 
+							clearAllBotsInfo();
+							// map changed, re-find plan and path
 
-					}					 
+						}
+
+					}
 				}
-				 else
-				 {
-					 int ndidx = botVec[i]->currentMapNode;
-					 
-					 currentMap->changeNodeTexInVBO( currentMap->nodesList[ndidx] ,botVec[i]->display );
+				else
+				{
+					int ndidx = botVec[i]->currentMapNode;
 
-					 m_pRenderer->updateVBO(currentMap->renderObj->vbo_id,currentMap->renderObj->vbo,0,currentMap->renderObj->VertexNum,sizeof(PT_Vertex));
-				 }
+					currentMap->changeNodeTexInVBO(currentMap->nodesList[ndidx], botVec[i]->display);
+
+					m_pRenderer->updateVBO(currentMap->renderObj->vbo_id, currentMap->renderObj->vbo, 0, currentMap->renderObj->VertexNum, sizeof(PT_Vertex));
+				}
 			}
-			
-			
-		}
-		
 
-		if(fcount%10 == 0)
+
+		}
+
+
+		if (fcount % 10 == 0)
 		{
-			for (int i =0; i< (int)botVec.size() ; ++i)
+			for (int i = 0; i < (int)botVec.size(); ++i)
 			{
-				int ndidx = botVec[i]->currentMapNode ;
-				currentMap->nodesList[ndidx].nodeType = botVec[i]->currentMapNode_Type; 
-				currentMap->changeNodeTexInVBO( currentMap->nodesList[ndidx]);//,botVec[i]->display );
+				int ndidx = botVec[i]->currentMapNode;
+				currentMap->nodesList[ndidx].nodeType = botVec[i]->currentMapNode_Type;
+				currentMap->changeNodeTexInVBO(currentMap->nodesList[ndidx]);//,botVec[i]->display );
 			}
 		}
-	 
 
-		m_pRenderer->bindVertexBuffer(currentMap->renderObj->vbo_id,sizeof(PT_Vertex),0, pShader );//DX11:auto set the input layout
+
+		m_pRenderer->bindVertexBuffer(currentMap->renderObj->vbo_id, sizeof(PT_Vertex), 0, pShader);//DX11:auto set the input layout
 		m_pRenderer->bindIndexBuffer(currentMap->renderObj->ibo_id);
 
 
 
-		m_pRenderer->drawIndex(4,currentMap->renderObj->IndexNum,0,0);//4 == triangles
+		m_pRenderer->drawIndex(4, currentMap->renderObj->IndexNum, 0, 0);//4 == triangles
 
 
 		//DX need to reset shader resource = NULL when set render target
@@ -296,17 +296,17 @@ namespace NBE
 
 	GOAPapp::~GOAPapp()
 	{
-		
-		for (auto it = botVec.begin();it!=botVec.end();)
+
+		for (auto it = botVec.begin(); it != botVec.end();)
 		{
 			delete *it;
 			it = botVec.erase(it);
 		}
-		
+
 
 		//////////////////////////////////////////////////////////////////////////
 		//maps for rendering
-		for (auto it = m_maps.begin();it!=m_maps.end();)
+		for (auto it = m_maps.begin(); it != m_maps.end();)
 		{
 			delete *it;
 			it = m_maps.erase(it);
@@ -360,12 +360,12 @@ namespace NBE
 
 	void GOAPapp::initTex()
 	{
-		m_combinedTex = TextureManager::getInstancePtr()->LoadFromFile(TEXT("GOAPTex.png"),TEXT("GOAPTEX"))->textureIdx;
+		m_combinedTex = TextureManager::getInstancePtr()->LoadFromFile(TEXT("GOAPTex.png"), TEXT("GOAPTEX"))->textureIdx;
 	}
 
 	void GOAPapp::initBots(AstarMap* pMap)
 	{
-		for(unsigned int i =0; i< botVec.size(); ++i)
+		for (unsigned int i = 0; i < botVec.size(); ++i)
 		{
 			botVec[i]->defineStartEnd(pMap);
 		}
@@ -384,26 +384,26 @@ namespace NBE
 	void GOAPapp::loadMaps()//for drawing
 	{
 		//load public shader
-		m_shaderID = shaderMgr->loadShader(TEXT("Shader\\GOAP"),"PT");
+		m_shaderID = shaderMgr->loadShader(TEXT("Shader\\GOAP"), "PT");
 
 
 
 		//load all the txt map
 
-		wchar_t* mapsname[TotalMaps] = {L"simulation.txt"};
+		wchar_t* mapsname[TotalMaps] = { L"simulation.txt" };
 
-		for (int i = 0;i<TotalMaps;++i)
+		for (int i = 0; i < TotalMaps; ++i)
 		{
-			std::ifstream* ifs = new std::ifstream(L"tests\\" + std::wstring(mapsname[i]));		
+			std::ifstream* ifs = new std::ifstream(L"tests\\" + std::wstring(mapsname[i]));
 			char buffer[Map_MaxWidth];
-			ifs->getline(buffer,Map_MaxWidth);
-			uint w = strlen(buffer) ;// n
+			ifs->getline(buffer, Map_MaxWidth);
+			uint w = strlen(buffer);// n
 			uint h = 0;
 			AstarMap* oneMap = new AstarMap(std::wstring(mapsname[i]));
 
-			for (;;++h,ifs->getline(buffer,Map_MaxWidth))
+			for (;; ++h, ifs->getline(buffer, Map_MaxWidth))
 			{
-				for (uint j =0; j< w; ++j)
+				for (uint j = 0; j < w; ++j)
 				{
 					/*
 					Start (1 NPC each)
@@ -416,73 +416,73 @@ namespace NBE
 					Pizza Hut
 					*/
 					vec2f texCoordInCombinedTex;
-					switch ( buffer[j] )
+					switch (buffer[j])
 					{
 					case 'S'://start
-						oneMap->nodesList.push_back(AstarMapNode(START,j,h,w*h+j));
-						oneMap->startNode.push_back( oneMap->nodesList.size()-1 );
-						botVec.push_back(new AIbot(oneMap->nodesList.size()-1));
+						oneMap->nodesList.push_back(AstarMapNode(START, j, h, w*h + j));
+						oneMap->startNode.push_back(oneMap->nodesList.size() - 1);
+						botVec.push_back(new AIbot(oneMap->nodesList.size() - 1));
 						botVec.back()->display = NPC1 + botVec.size() - 1;
 						break;
 					case 'E'://end
 						ADDNODE(END)
-						//oneMap->endNode = oneMap->nodesList.size()-1;
-						break;
+							//oneMap->endNode = oneMap->nodesList.size()-1;
+							break;
 					case '.'://empty
 						ADDNODE(EMPTY)
-						break;
+							break;
 					case '/'://water
 						ADDNODE(SEMIBLOCKER)
-						break;
+							break;
 					case '#'://stone
 						ADDNODE(BLOCKER)
-						break;
+							break;
 					case 'M'://money
 						ADDNODE(MONEY)
-						oneMap->resource[MONEY]->push_back(Res(w*h+j,true));
+							oneMap->resource[MONEY]->push_back(Res(w*h + j, true));
 						break;
 					case 'W'://wolf
 						ADDNODE(WOLF)
-						oneMap->resource[WOLF]->push_back(Res(w*h+j,true));
+							oneMap->resource[WOLF]->push_back(Res(w*h + j, true));
 						break;
 					case 'O'://Oven
 						ADDNODE(OVEN)
-						oneMap->resource[OVEN]->push_back(Res(w*h+j));
+							oneMap->resource[OVEN]->push_back(Res(w*h + j));
 						break;
 					case 'T'://table , means eat
 						ADDNODE(TABLE)
-						oneMap->resource[TABLE]->push_back(Res(w*h+j));
+							oneMap->resource[TABLE]->push_back(Res(w*h + j));
 						break;
 					case 'F'://Fur Trader
 						ADDNODE(FURTRADER)
-						oneMap->resource[FURTRADER]->push_back(Res(w*h+j));
+							oneMap->resource[FURTRADER]->push_back(Res(w*h + j));
 						break;
 					case 'G'://	General Store
 						ADDNODE(GENERALSTORE)
-						oneMap->resource[GENERALSTORE]->push_back(Res(w*h+j));
+							oneMap->resource[GENERALSTORE]->push_back(Res(w*h + j));
 						break;
 					case 'B':
 						ADDNODE(BANK)
-						oneMap->resource[BANK]->push_back(Res(w*h+j));
+							oneMap->resource[BANK]->push_back(Res(w*h + j));
 						break;
 					case 'P'://	Pizza Hut						
 						ADDNODE(PIZZAHUT)
-						oneMap->resource[PIZZAHUT]->push_back(Res(w*h+j));
+							oneMap->resource[PIZZAHUT]->push_back(Res(w*h + j));
 						break;
 					default:
-						errorMsg("Map error: can't recognize the character or this line doesn't match the width","error!");
+						errorMsg("Map error: can't recognize the character or this line doesn't match the width", "error!");
 						break;
 					}
 
 					texCoordInCombinedTex = oneMap->getTexCoord(oneMap->nodesList.back().nodeType);
 
-					oneMap->vertices.push_back(PT_Vertex(j,h,texCoordInCombinedTex));
-					oneMap->vertices.push_back(PT_Vertex(j+1,h,texCoordInCombinedTex+ vec2f(1, 0)));
-					oneMap->vertices.push_back(PT_Vertex(j+1,h-1,texCoordInCombinedTex+vec2f(1,1/TEXCOUNT)));
-					oneMap->vertices.push_back(PT_Vertex(j,h-1,texCoordInCombinedTex+ vec2f(0,1/TEXCOUNT)));
+					oneMap->vertices.push_back(PT_Vertex(j, h, texCoordInCombinedTex));
+					oneMap->vertices.push_back(PT_Vertex(j + 1, h, texCoordInCombinedTex + vec2f(1, 0)));
+					oneMap->vertices.push_back(PT_Vertex(j + 1, h - 1, texCoordInCombinedTex + vec2f(1, 1 / TEXCOUNT)));
+					oneMap->vertices.push_back(PT_Vertex(j, h - 1, texCoordInCombinedTex + vec2f(0, 1 / TEXCOUNT)));
 				}
 
-				if(ifs->eof())
+				if (ifs->eof())
 				{
 					ifs->close();
 					delete ifs;
@@ -494,7 +494,7 @@ namespace NBE
 
 
 			oneMap->width = w;
-			oneMap->height = h+1;
+			oneMap->height = h + 1;
 
 
 
@@ -507,58 +507,58 @@ namespace NBE
 
 			//vbo,ibo
 
-			for (unsigned int row = 0; row<h+1; ++row)
+			for (unsigned int row = 0; row < h + 1; ++row)
 			{
 				for (unsigned int col = 0; col < w; ++col)
 				{
 					unsigned int idx = 4 * (row * w + col);
-					oneMap->renderObj->ibo.push_back( idx );
-					oneMap->renderObj->ibo.push_back( idx + 1 );
-					oneMap->renderObj->ibo.push_back( idx + 2);
+					oneMap->renderObj->ibo.push_back(idx);
+					oneMap->renderObj->ibo.push_back(idx + 1);
+					oneMap->renderObj->ibo.push_back(idx + 2);
 
-					oneMap->renderObj->ibo.push_back( idx );
-					oneMap->renderObj->ibo.push_back( idx +2);
-					oneMap->renderObj->ibo.push_back( idx + 3);
+					oneMap->renderObj->ibo.push_back(idx);
+					oneMap->renderObj->ibo.push_back(idx + 2);
+					oneMap->renderObj->ibo.push_back(idx + 3);
 				}
 			}
 
 			oneMap->renderObj->IndexNum = oneMap->renderObj->ibo.size();
 
-			m_pRenderer->createVBO(oneMap->renderObj.get(),sizeof(PT_Vertex),m_shaderID,"PT");
+			m_pRenderer->createVBO(oneMap->renderObj.get(), sizeof(PT_Vertex), m_shaderID, "PT");
 			m_pRenderer->createIBO(oneMap->renderObj.get());
 
 
 			m_maps.push_back(oneMap);
 		}
 
-		initBots( m_maps[currentMapIdx]);
+		initBots(m_maps[currentMapIdx]);
 
 	}
 
 
-	
 
-	bool GOAPapp::doPathFinding( AstarMap* pMap,AIbot* bot, uint end, int stepsPerFrame)
+
+	bool GOAPapp::doPathFinding(AstarMap* pMap, AIbot* bot, uint end, int stepsPerFrame)
 	{
 		uint stepsCount = 0;
 		bot->actionStartMapNode = bot->currentMapNode;
 		uint current = bot->currentMapNode;
-		
-		while(current != end )
+
+		while (current != end)
 		{
 			AstarMapNode& curNd = pMap->nodesList[current];
 			//curNd.nodeType = CURNODE;
 			//printMapOnConsole(pMap);
-			pMap->addNeighorsToOpenList(current,end);
+			pMap->addNeighorsToOpenList(current, end);
 			//printMapOnConsole(pMap);
 			pMap->removeNodeInOpenList(current);
 			curNd.nodeCode = CLOSED;
 			//pMap->changeNodeTexInVBO(curNd);
 			pMap->closed.push_back(current);
 			//printMapOnConsole(pMap);
-			if(pMap->open.size() > 0)
+			if (pMap->open.size() > 0)
 			{
-				current = pMap->getLowestCostNodeInOpenList(pMap->open,pMap);
+				current = pMap->getLowestCostNodeInOpenList(pMap->open, pMap);
 			}
 			else
 			{
@@ -576,28 +576,28 @@ namespace NBE
 
 		}
 
-		
+
 		bot->pathNodes.clear();
 		//find the path
 		uint back = end;
 		bot->pathNodes.push_back(end);
-		for (;back != bot->actionStartMapNode;)
+		for (; back != bot->actionStartMapNode;)
 		{
 			//pMap->nodesList[back].nodeType = PATH;
-		
+
 			back = pMap->nodesList[back].parent;
 			bot->pathNodes.push_back(back);
 			//pMap->changeNodeTexInVBO(pMap->nodesList[back],bot->display);
-			
+
 		}
 		//updateVBO(bot->botInMap->renderObj->vbo_id,bot->botInMap->renderObj->vbo,0,bot->botInMap->renderObj->VertexNum,sizeof(PT_Vertex));
-		for (unsigned int i = 0;i<pMap->open.size(); ++i)
+		for (unsigned int i = 0; i < pMap->open.size(); ++i)
 		{
-			pMap->nodesList[ pMap->open[i] ].nodeCode = EMPTY;
+			pMap->nodesList[pMap->open[i]].nodeCode = EMPTY;
 		}
-		for (unsigned int i = 0;i<pMap->closed.size(); ++i)
+		for (unsigned int i = 0; i < pMap->closed.size(); ++i)
 		{
-			pMap->nodesList[ pMap->closed[i] ].nodeCode = EMPTY;
+			pMap->nodesList[pMap->closed[i]].nodeCode = EMPTY;
 		}
 		pMap->open.clear();
 		pMap->closed.clear();
@@ -610,31 +610,31 @@ namespace NBE
 	{
 
 
-		for (unsigned int i= 0; i< botVec.size(); ++i)
+		for (unsigned int i = 0; i < botVec.size(); ++i)
 		{
 			//botVec[i]->currentMapNode_Type = EMPTY;
-		if( botVec[i]->currentMapNode_Type >= MONEY && botVec[i]->currentMapNode_Type <= WOLF)
-			botVec[i]->currentMapNode_Type = EMPTY;
-	 
+			if (botVec[i]->currentMapNode_Type >= MONEY && botVec[i]->currentMapNode_Type <= WOLF)
+				botVec[i]->currentMapNode_Type = EMPTY;
+
 
 			botVec[i]->foundPlan = false;
 			botVec[i]->foundPathToTargetNode = false;
 			botVec[i]->currentPlan.clear();
 			botVec[i]->startState = botVec[i]->current;//new AIState(*botVec[i]->current);//always keep the current state to start state, 
-		 
-			for (auto it = botVec[i]->open.begin(); it!=botVec[i]->open.end(); ++it)
+
+			for (auto it = botVec[i]->open.begin(); it != botVec[i]->open.end(); ++it)
 			{
-				if(botVec[i]->current != *it)
+				if (botVec[i]->current != *it)
 				{
 					delete (*it);
-				}	
+				}
 			}
 
 			botVec[i]->open.clear();
 
-			for (auto it = botVec[i]->closed.begin(); it!=botVec[i]->closed.end(); ++it )
+			for (auto it = botVec[i]->closed.begin(); it != botVec[i]->closed.end(); ++it)
 			{
-				if(botVec[i]->current != *it)
+				if (botVec[i]->current != *it)
 				{
 					delete (*it);
 				}

@@ -97,6 +97,11 @@ namespace NBE
 		m_pos += rel_pos;
 	}
 
+	void Camera::update(double deltaTime)
+	{
+		updateViewMatrix();
+	}
+
 	void Camera::updateViewMatrix()
 	{		 
 // 		vec3f vz= -m_direction;

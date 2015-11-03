@@ -85,8 +85,10 @@ namespace NBEANIMATOIN
 
 		std::shared_ptr<Camera> m_pCamera;//main camera
 		//timing
-		clocks m_startFrameTime;
-		clocks m_nextUpdateTime;
+		clocks m_currentTime;
+		clocks m_nextUpdateRenderingTime;
+		clocks logicUpdateRate;
+		double logicUpdateSecondsPerFrame;
 		NBETimer m_timer;
 	
 		GAMESTATE currentState;

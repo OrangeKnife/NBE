@@ -63,7 +63,7 @@ namespace NBE
             desireClocksPerFrame = secondsToClocks(desireSecondsPerFrame);
         }
 
-        inline clocks NBETimer::getDesireColocsPerFrame()
+        inline clocks NBETimer::getDesireClocsPerFrame()
         {
             return desireClocksPerFrame;
         }

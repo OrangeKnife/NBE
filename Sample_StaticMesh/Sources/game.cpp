@@ -16,7 +16,7 @@
 
 
 
- 
+
 
 #include "RenderObject.h"   
 #include "RendererGL.h"
@@ -32,11 +32,11 @@ namespace NBEANIMATOIN
 		cfg.loadConfig(cfgname);
 		//cfg.load(iniName);
 		RenderInfo* rdinfo = new RenderInfo();
-		rdinfo->height = TypeCast::stringToInt( cfg.getInfo("height") );
-		rdinfo->width = TypeCast::stringToInt( cfg.getInfo("width") );
-		rdinfo->fullScreen = TypeCast::charToBool( cfg.getInfo("fullScreen").c_str() );
+		rdinfo->height = TypeCast::stringToInt(cfg.getInfo("height"));
+		rdinfo->width = TypeCast::stringToInt(cfg.getInfo("width"));
+		rdinfo->fullScreen = TypeCast::charToBool(cfg.getInfo("fullScreen").c_str());
 		string str = cfg.getInfo("renderSystem");
-		if(str == string("GL"))
+		if (str == string("GL"))
 		{
 			rdinfo->type = 0;
 		}
@@ -48,13 +48,13 @@ namespace NBEANIMATOIN
 		str = cfg.getInfo("title");
 		TCHAR* t_str = TypeCast::charToTCHAR(str.c_str());
 		size_t t_sz = (str.size() + 1) * sizeof(TCHAR);
-		memcpy_s(rdinfo->title,t_sz,t_str, t_sz);
+		memcpy_s(rdinfo->title, t_sz, t_str, t_sz);
 		delete t_str;
 
 		str = cfg.getInfo("className");
 		t_str = TypeCast::charToTCHAR(str.c_str());
 		t_sz = (str.size() + 1) * sizeof(TCHAR);
-		memcpy_s(rdinfo->className,t_sz,t_str, t_sz);
+		memcpy_s(rdinfo->className, t_sz, t_str, t_sz);
 		delete t_str;
 		m_rdInfo = rdinfo;
 		return rdinfo;
@@ -62,8 +62,8 @@ namespace NBEANIMATOIN
 
 	Game::Game(HINSTANCE h)
 		:m_timer(NBETimer()),
-		m_nextUpdateTime(0),
-		m_startFrameTime(0),
+		m_nextUpdateRenderingTime(0),
+		m_currentTime(0),
 		root(nullptr)
 	{
 		RenderInfo* rdinfo = loadRenderInfo(TEXT("config.ini"));
@@ -153,7 +153,9 @@ namespace NBEANIMATOIN
 		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key('C', NEvent_Key::KEY_DOWN), this, (void*)('C'));
 		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key(VK_SPACE, NEvent_Key::KEY_DOWN), this, (void*)(VK_SPACE));
 
-
+		m_timer.resetFPSLimit(120);//rendering
+		logicUpdateSecondsPerFrame = 1.0 / 60;
+		logicUpdateRate = m_timer.secondsToClocks(logicUpdateSecondsPerFrame);
 	}
 
 	Game::~Game()
@@ -164,7 +166,7 @@ namespace NBEANIMATOIN
 		MeshManager::deleteInstance();
 
 
-		delete root;  
+		delete root;
 	}
 
 	void Game::run()
@@ -193,7 +195,7 @@ namespace NBEANIMATOIN
 			}
 			else
 			{
-				if(currentState != EXIT)
+				if (currentState != EXIT)
 					updateFrame();
 				else
 					break;
@@ -206,61 +208,89 @@ namespace NBEANIMATOIN
 
 	void Game::updateFrame()
 	{
-		m_startFrameTime = m_timer.GetSystemClocks();
-		m_timer.PreciseWaitUntill(m_nextUpdateTime);
-		m_nextUpdateTime = m_timer.GetSystemClocks()  + m_timer.getDesireColocsPerFrame();
-		
+		static auto previousLogicUpdated = m_timer.GetSystemClocks();
+		static size_t catchupCount = 0;
+		static clocks lag = 0;
+
+		lag += m_timer.GetSystemClocks() - previousLogicUpdated;
+
+		catchupCount = 0;
+		while (lag >= logicUpdateRate && catchupCount < 600)
+		{
+			//logic update
+
+			if (m_pRenderer->isActive())
+			{
+				for (size_t i = 0; i < Input::getTotalInputNum(); ++i)
+					Input::getInput(i)->update();
+			}
+
+			m_pCamera->update(logicUpdateSecondsPerFrame);
+
+			lag -= logicUpdateRate;
+
+			++catchupCount;
+		}
+		previousLogicUpdated = m_timer.GetSystemClocks();
+		///
+
+		m_currentTime = m_timer.GetSystemClocks();
+		m_timer.PreciseWaitUntill(m_nextUpdateRenderingTime);
+		m_nextUpdateRenderingTime = m_timer.GetSystemClocks() + m_timer.getDesireClocsPerFrame();
+
 		if (m_pRenderer->isActive())
 		{
-			for (size_t i = 0; i < Input::getTotalInputNum(); ++i)
-				Input::getInput(i)->update();
-			
-		}
+			//rendering
 
-		m_pCamera->updateViewMatrix();
-		
-		float color[4] = {0.5f,0.6f,0.7f,0.1f}; 
-		m_pRenderer->clearColorBuffer(color);
-		m_pRenderer->clearDepthBuffer(1.0);
-
-		
-		m_renderQueue.push_back(root);
+			float color[4] = { 0.5f,0.6f,0.7f,0.1f };
+			m_pRenderer->clearColorBuffer(color);
+			m_pRenderer->clearDepthBuffer(1.0);
 
 
-		while(m_renderQueue.size() > 0)
-		{
-			Node* current = m_renderQueue.front();
-			Node::ChildNodeMap children = current->getChildren();
-			for(auto it = children.begin(); it != children.end(); ++it)
+			m_renderQueue.push_back(root);
+
+
+			while (m_renderQueue.size() > 0)
 			{
-				m_renderQueue.push_back(it->second);
+				Node* current = m_renderQueue.front();
+				Node::ChildNodeMap children = current->getChildren();
+				for (auto it = children.begin(); it != children.end(); ++it)
+				{
+					m_renderQueue.push_back(it->second);
+				}
+
+				Node::ObjectMap objs = current->getObjects();
+				for (auto it = objs.begin(); it != objs.end(); ++it)
+				{
+					if ((*it).second->isRenderable())
+						drawObj(reinterpret_cast<RenderObject*>(it->second), current->getWorldTM());
+				}
+
+				m_renderQueue.pop_front();
 			}
 
-			Node::ObjectMap objs = current->getObjects();
-			for(auto it = objs.begin(); it != objs.end(); ++it)
-			{
-				if((*it).second->isRenderable())
-					drawObj(reinterpret_cast<RenderObject*>(it->second),current->getWorldTM());
-			}
+			//m_pRenderer->applyTexture(generalShader, "diftex", NULL, -1);
+			//m_pRenderer->drawIndex(0, 0, 0, 0);
 
-			m_renderQueue.pop_front();
+
+			m_pRenderer->swapBuff(false);
+
+
 		}
 
-		//m_pRenderer->applyTexture(generalShader, "diftex", NULL, -1);
-		//m_pRenderer->drawIndex(0, 0, 0, 0);
 
 
-		m_pRenderer->swapBuff(true);
+
 	}
 
-	 
-	
+
+
 
 	void Game::handleMovementEvent(NEvent_Key* eventData, void* p)
 	{
 
 		m_pCamera->handleKeyDown(int(p));
-		
+
 	}
 
 
@@ -313,19 +343,19 @@ namespace NBEANIMATOIN
 	//	rayTo -= btScalar(y) * dVert;
 	//	return rayTo;
 	//}
-	 
-	void Game::initCamera(float asp){
+
+	void Game::initCamera(float asp) {
 		//camera
 		m_pCamera.reset(new Camera(TEXT("cam1")));
 
-		m_pCamera->setPosition(vec3f(0,0,350));
+		m_pCamera->setPosition(vec3f(0, 0, 350));
 		m_pCamera->updateViewMatrix();
-		m_pCamera->setProjection(45.0f,asp,0.1f,10000.f);
-		if(root)
+		m_pCamera->setProjection(45.0f, asp, 0.1f, 10000.f);
+		if (root)
 			root->attachObject(m_pCamera.get());
 	}
 
-	void Game::initInput(){
+	void Game::initInput() {
 		//control
 		auto mouse = new Mouse();
 		auto window_hwnd = m_pRenderer->getWindow()->getHWND();
@@ -333,45 +363,45 @@ namespace NBEANIMATOIN
 		mouse->calculateCenter(window_hwnd);
 
 		new KeyBoard();
-		}
- 
-	void Game::drawObj(RenderObject* obj, Matrix4f& transform){
+	}
 
-		for(auto it = obj->batchVec->begin();
-			it != obj->batchVec->end(); ++it)
+	void Game::drawObj(RenderObject* obj, Matrix4f& transform) {
+
+		for (auto it = obj->batchVec->begin();
+		it != obj->batchVec->end(); ++it)
 		{
 			int shader = generalShader;// (*it)->pMtl->shader;
 
 
 			m_pRenderer->applyShader(shader);
-			m_pRenderer->applyMatrix(shader,"viewMat",m_pCamera->getViewMatrix());
-			m_pRenderer->applyMatrix(shader,"projMat",m_pCamera->getProjection());
+			m_pRenderer->applyMatrix(shader, "viewMat", m_pCamera->getViewMatrix());
+			m_pRenderer->applyMatrix(shader, "projMat", m_pCamera->getProjection());
 
 			//obj->
 			int diffTex = (*it)->pMtl->getTexMapIdBySlot(Diffuse);
-			if(diffTex >= 0)
-				m_pRenderer->applyTexture(shader, "diftex", diffTex ,0);
+			if (diffTex >= 0)
+				m_pRenderer->applyTexture(shader, "diftex", diffTex, 0);
 			else
-				m_pRenderer->applyTexture(shader, "diftex", 0 ,0);
-			m_pRenderer->bindVertexBuffer(obj->vbo_id,sizeof(PTNC_Vertex),0, ShaderManager::getInstancePtr()->getShaderByIdx( shader) );
+				m_pRenderer->applyTexture(shader, "diftex", 0, 0);
+			m_pRenderer->bindVertexBuffer(obj->vbo_id, sizeof(PTNC_Vertex), 0, ShaderManager::getInstancePtr()->getShaderByIdx(shader));
 			m_pRenderer->bindIndexBuffer(obj->ibo_id);
 
- 
 
 
-			drawBatch(*it,transform);
+
+			drawBatch(*it, transform);
 
 
 
 		}
 	}
 
-	void Game::drawBatch(Batch* bat, Matrix4f& worldMat){
-		m_pRenderer->applyMatrix(generalShader,"modelMat",worldMat);//
-		m_pRenderer->drawIndex(4,bat->size,bat->startIndex,0);//4 == triangles
+	void Game::drawBatch(Batch* bat, Matrix4f& worldMat) {
+		m_pRenderer->applyMatrix(generalShader, "modelMat", worldMat);//
+		m_pRenderer->drawIndex(4, bat->size, bat->startIndex, 0);//4 == triangles
 
 	}
-	void Game::exit(){
+	void Game::exit() {
 		currentState = EXIT;
 	}
 
