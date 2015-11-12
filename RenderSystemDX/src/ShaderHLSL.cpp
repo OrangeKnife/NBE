@@ -16,7 +16,7 @@ namespace NBE
 	ShaderHLSL::ShaderHLSL(const String& shaderName,ID3D11Device* device)
 	{
 		//ID3D11Device* device = reinterpret_cast<RendererDX11*>(renderer)->getDeviceMgr()->getDevice(0);
-		wstring fxName = wstring(shaderName);
+		String fxName = String(shaderName);
 		fxName = fxName.append(TEXT(".fx"));
 
 		ID3D10Blob *fxblob = NULL, *errblob = NULL;

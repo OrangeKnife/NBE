@@ -111,9 +111,9 @@ namespace NBE
 		{return parent ? localTM * parent->getWorldTM() : localTM;}
 
 
-		MeshObject(string& nm)
-			:RenderObject(TypeCast::stringToString(nm))
-			,meshObjecNode(new Node(TypeCast::stringToString(nm) + TEXT("_meshObjNode")))
+		MeshObject(String& nm)
+			:RenderObject(nm)
+			,meshObjecNode(new Node(nm + TEXT("_meshObjNode")))
 			,localTMAnim(new KeyFrameContainer()),parent(NULL),isSkinMesh(false)
 			,skeletonVec(NULL),children(NULL)
 		{}

@@ -105,7 +105,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 				{
 					readAline();
 
-					MeshObject* obj = new MeshObject(string(buffer));
+					MeshObject* obj = new MeshObject(TypeCast::stringToString(string(buffer)));
 					
 					obj->meshObjecNode->attachObject(obj);
 					//matVec = new vector<Material*>();
