@@ -25,6 +25,6 @@ namespace NBE
         unsigned int type;
         String path;
         String name;
-        unsigned int textureIdx;
+        int textureIdx;
     };
 }

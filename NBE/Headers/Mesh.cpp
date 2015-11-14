@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include "Mesh.h"
 #include "File.h"
 #include <sstream>
@@ -53,7 +54,7 @@ Mesh* MeshManager::loadMeshFromFile_stream(wchar_t* fileName)
 	return ms;
 }
 */
-
+/*
 Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 {
 	String currentPath = fullPath.substr(0,fullPath.find_last_of('\\')+1);
@@ -105,7 +106,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 				{
 					readAline();
 
-					MeshObject* obj = new MeshObject(TypeCast::stringToString(string(buffer)));
+					MeshObject* obj = new MeshObject(string(buffer));
 					
 					obj->meshObjecNode->attachObject(obj);
 					//matVec = new vector<Material*>();
@@ -181,9 +182,9 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 						fs->read((char*)&obj->IndexNum,sizeof(uint));
 						uint verticesNum = obj->VertexNum;
 						uint indicesNum = obj->IndexNum;
-						obj->vbo = new PTNC_Vertex[verticesNum];
+						obj->vbo = new PNCT_Vertex[verticesNum];
 						//obj->indicesList = new uint[indicesNum];
-						PTNC_Vertex* pStart = static_cast<PTNC_Vertex*>(obj->vbo);
+						PNCT_Vertex* pStart = static_cast<PNCT_Vertex*>(obj->vbo);
 						while(vcount < (unsigned int)verticesNum)
 						{
 							fs->read((char*)(&pStart[vcount].pos),sizeof(vec3f));
@@ -424,6 +425,48 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 
 	return ms;
 }
+*/
+
+StaticMesh* MeshManager::loadStaticMeshFromFile(const String& fullPath)
+{
+	String currentPath = fullPath.substr(0, fullPath.find_last_of('\\') + 1);
+	ifstream* fs = FileIO::readFile(fullPath);
+ 
+	std::streampos fileSize;
+
+	fs->seekg(0, std::ios::end);
+	fileSize = fs->tellg();
+
+	StaticMesh* newMesh = new StaticMesh("");
+	newMesh->rawData = new char[(unsigned int)fileSize];
+
+	fs->seekg(0, std::ios::beg);
+	fs->read(newMesh->rawData, fileSize*sizeof(char));
+	fs->close();
+		
+	newMesh->data = NBESTATICMESH::GetMutableStaticMeshData(newMesh->rawData);
+	newMesh->reName(newMesh->data->staticMeshName()->str());
+
+	for (uint i = 0; i < newMesh->data->materials()->size(); ++i)
+	{
+		auto currentMat = newMesh->data->materials()->Get(i);
+		for (uint j = 0; j < currentMat->textureMaps()->size(); ++j)
+		{
+			auto currentTex = currentMat->textureMaps()->Get(j);
+			String texMapFileName = TypeCast::stringToString( currentTex->texMapFileName()->str() );
+			const_cast<NBESTATICMESH::TexMap*>(currentTex)->mutate_texId( TextureManager::getInstancePtr()->LoadFromFile(currentPath + texMapFileName, texMapFileName)->textureIdx );
+			auto tsta=currentTex->texId();
+		}
+	}
+	
+	delete fs;
+
+	m_pMeshVec.push_back(newMesh);
+
+	return newMesh;
+}
+
+/*
 
 Mesh::Mesh():boneVec(NULL),matVec(NULL),objectVec(NULL)
 {}
@@ -512,3 +555,5 @@ Bone* Mesh::getBoneByIdx( int idx )
 	else
 		return NULL;
 }
+
+*/

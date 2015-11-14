@@ -1,7 +1,7 @@
 #include "RenderObject.h"
 namespace NBE
 {
-	RenderObject::RenderObject(String& nm)
+	RenderObject::RenderObject(std::string& nm)
 		:Object(nm),vbo_id(-1),ibo_id(-1)
 		,VertexNum(0),IndexNum(0),vbo(nullptr)
 		,batchVec(new std::vector<Batch*>())

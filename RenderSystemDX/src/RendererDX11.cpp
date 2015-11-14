@@ -118,7 +118,7 @@ namespace NBE
 		BlendState.AlphaToCoverageEnable = false;
 		BlendState.IndependentBlendEnable = false;
 		BlendState.RenderTarget[0].BlendEnable = true;
-		
+
 		BlendState.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;	//D3D11_BLEND_SRC_COLOR;
 		BlendState.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;//D3D11_BLEND_DEST_COLOR;
 		BlendState.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;//D3D11_BLEND_ONE;
@@ -126,7 +126,7 @@ namespace NBE
 		BlendState.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 		BlendState.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		BlendState.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-		
+
 		m_currentDevice->CreateBlendState(&BlendState, &m_BlendState);
 
 		UINT sampleMask = 0xffffffff;
@@ -225,11 +225,12 @@ namespace NBE
 		}
 	}
 
-	void RendererDX11::createVBO(RenderObject* ro, uint verSize, uint shIdx, char* fmt)
+	void RendererDX11::createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt)
 	{
 		ID3D11Buffer* vbuff;
-		D3D11_SUBRESOURCE_DATA srd = { ro->vbo, 0, 0 };
-		HV(m_currentDevice->CreateBuffer(&CD3D11_BUFFER_DESC(ro->VertexNum * verSize, D3D11_BIND_VERTEX_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE), &srd, &vbuff));
+		PNCT_Vertex* test = (PNCT_Vertex*)verticesData;
+		D3D11_SUBRESOURCE_DATA srd = { verticesData, 0, 0 };
+		HV(m_currentDevice->CreateBuffer(&CD3D11_BUFFER_DESC(verNum * verSize, D3D11_BIND_VERTEX_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE), &srd, &vbuff));
 
 		int len = strlen(fmt);
 		D3D11_INPUT_ELEMENT_DESC *decl = new D3D11_INPUT_ELEMENT_DESC[len];
@@ -254,7 +255,7 @@ namespace NBE
 			default: assert(0);
 			}
 
-			
+
 		}
 
 
@@ -272,19 +273,78 @@ namespace NBE
 		m_inputLayoutVec.push_back(inputLayout);
 		m_vbuffVec.push_back(vbuff);
 		//vertex buffer and the layout have the same index in the vector
-		ro->vbo_id = m_vbuffVec.size() - 1;
+		auto vbo_id = m_vbuffVec.size() - 1;
 	}
-
-
-	void RendererDX11::createIBO(RenderObject* ro)
+	void RendererDX11::createIBO(void* indicesData, uint indexNum)
 	{
 		ID3D11Buffer* ibuff;
-		D3D11_SUBRESOURCE_DATA srd = { ro->ibo.data(), 0, 0 };
-		HV(m_currentDevice->CreateBuffer(&CD3D11_BUFFER_DESC(ro->ibo.size()*sizeof(uint), D3D11_BIND_INDEX_BUFFER, D3D11_USAGE_IMMUTABLE), &srd, &ibuff));
+		D3D11_SUBRESOURCE_DATA srd = { indicesData, 0, 0 };
+		HV(m_currentDevice->CreateBuffer(&CD3D11_BUFFER_DESC(indexNum*sizeof(uint), D3D11_BIND_INDEX_BUFFER, D3D11_USAGE_IMMUTABLE), &srd, &ibuff));
 		//m_context->IASetIndexBuffer(ibuff, DXGI_FORMAT_R32_UINT, 0);
 		m_ibuffVec.push_back(ibuff);
-		ro->ibo_id = m_ibuffVec.size() - 1;
+		auto ibo_id = m_ibuffVec.size() - 1;
 	}
+
+	//void RendererDX11::createVBO(RenderObject* ro, uint verSize, uint shIdx, char* fmt)
+	//{
+	//	ID3D11Buffer* vbuff;
+	//	D3D11_SUBRESOURCE_DATA srd = { ro->vbo, 0, 0 };
+	//	HV(m_currentDevice->CreateBuffer(&CD3D11_BUFFER_DESC(ro->VertexNum * verSize, D3D11_BIND_VERTEX_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE), &srd, &vbuff));
+
+	//	int len = strlen(fmt);
+	//	D3D11_INPUT_ELEMENT_DESC *decl = new D3D11_INPUT_ELEMENT_DESC[len];
+	//	memset(decl, 0, sizeof(D3D11_INPUT_ELEMENT_DESC)*len);
+	//	int offset = 0, semidx = 0;
+
+	//	for (int i = 0; i < len; i++)
+	//	{
+	//		D3D11_INPUT_ELEMENT_DESC &d = decl[i];
+
+	//		d.AlignedByteOffset = offset;
+	//		switch (fmt[i])
+	//		{
+	//		case 'P': d.SemanticName = "POSITION"; d.Format = DXGI_FORMAT_R32G32B32_FLOAT; offset += 12; break;
+	//		case 'T': d.SemanticName = "TEXCOORD"; d.Format = DXGI_FORMAT_R32G32_FLOAT;    offset += 8;d.SemanticIndex = semidx++; break;
+	//		case 'N': d.SemanticName = "NORMAL";   d.Format = DXGI_FORMAT_R32G32B32_FLOAT; offset += 12; break;
+	//		case 'C': d.SemanticName = "COLOR";    d.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;  offset += 16; break;
+	//		case 'G': d.SemanticName = "TANGENT"; d.Format = DXGI_FORMAT_R32G32B32_FLOAT; offset += 12; break;//tangent
+	//		case 'B': d.SemanticName = "BITANGENT"; d.Format = DXGI_FORMAT_R32G32B32_FLOAT; offset += 12; break;//bitangent
+	//		case 'I': d.SemanticName = "SKINBONE"; d.Format = DXGI_FORMAT_R32G32B32A32_SINT; offset += 16; break;//skin bone index
+	//		case 'W': d.SemanticName = "BONEWEIGHT"; d.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; offset += 16; break;//skin bone weight
+	//		default: assert(0);
+	//		}
+
+	//		
+	//	}
+
+
+	//	//TODO remove shader* , use all the same layout for the same vertex structure
+
+	//	ID3DX11Effect* effect = m_effectVec[shIdx];
+	//	D3DX11_PASS_DESC passDesc;
+	//	ID3DX11EffectTechnique* pRenderTechnique = effect->GetTechniqueByIndex(0);//default technique TODO: multiple technique
+
+	//	ID3D11InputLayout* inputLayout;
+	//	HV(pRenderTechnique->GetPassByIndex(0)->GetDesc(&passDesc));
+	//	HV(m_currentDevice->CreateInputLayout(decl, len, passDesc.pIAInputSignature, passDesc.IAInputSignatureSize, &inputLayout));
+	//	//m_context->IASetInputLayout(inputLayout);	
+	//	delete[] decl;
+	//	m_inputLayoutVec.push_back(inputLayout);
+	//	m_vbuffVec.push_back(vbuff);
+	//	//vertex buffer and the layout have the same index in the vector
+	//	ro->vbo_id = m_vbuffVec.size() - 1;
+	//}
+
+
+	//void RendererDX11::createIBO(RenderObject* ro)
+	//{
+	//	ID3D11Buffer* ibuff;
+	//	D3D11_SUBRESOURCE_DATA srd = { ro->ibo.data(), 0, 0 };
+	//	HV(m_currentDevice->CreateBuffer(&CD3D11_BUFFER_DESC(ro->ibo.size()*sizeof(uint), D3D11_BIND_INDEX_BUFFER, D3D11_USAGE_IMMUTABLE), &srd, &ibuff));
+	//	//m_context->IASetIndexBuffer(ibuff, DXGI_FORMAT_R32_UINT, 0);
+	//	m_ibuffVec.push_back(ibuff);
+	//	ro->ibo_id = m_ibuffVec.size() - 1;
+	//}
 
 	bool RendererDX11::updateVBO(uint vboIdx, void* newBuff, uint start, uint length, uint verSize)
 	{
@@ -340,7 +400,7 @@ namespace NBE
 
 	void RendererDX11::clearColorBuffer(float* color)
 	{
-		for_each(begin(m_rtviewVec), end(m_rtviewVec), [&](ID3D11RenderTargetView* rt){
+		for_each(begin(m_rtviewVec), end(m_rtviewVec), [&](ID3D11RenderTargetView* rt) {
 			m_context->ClearRenderTargetView(rt, color);
 		});
 
@@ -369,7 +429,7 @@ namespace NBE
 
 	void RendererDX11::_applyLastShaderResource()
 	{
-		if (m_lastShaderIdx >= 0){
+		if (m_lastShaderIdx >= 0) {
 			HV(m_effectVec[m_lastShaderIdx]->GetTechniqueByIndex(0)->GetPassByIndex(0)->Apply(0, m_context));
 		}
 	}
@@ -383,8 +443,8 @@ namespace NBE
 		uint numLevels = 1;
 		while (width > 1 || height > 1)
 		{
-			width = max(width / 2, 1);
-			height = max(height / 2, 1);
+			width = std::max<uint>(width / 2, 1);
+			height = std::max<uint>(height / 2, 1);
 			++numLevels;
 		}
 
@@ -499,7 +559,7 @@ namespace NBE
 		m_context->OMSetRenderTargets(1, &m_rtviewVec[idxOfRT], m_dsview);
 	}
 
-	
+
 	void RendererDX11::createRenderTarget(uint& idxOfRT, uint& idxOfTex/*shader resource*/, uint format, uint w, uint h)
 	{
 		format = DXTypes::Map(format);
@@ -615,7 +675,7 @@ namespace NBE
 
 	NBE_API RenderSystem* __cdecl createDX11(RenderInfo* ri, HINSTANCE h)
 	{
-		NBEWindow* win = new NBEWindow(ri,h);//delete when release renderer, they are 1:1 now
+		NBEWindow* win = new NBEWindow(ri, h);//delete when release renderer, they are 1:1 now
 		return new RendererDX11(ri, win);
 	}
 

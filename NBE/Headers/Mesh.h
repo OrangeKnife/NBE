@@ -11,10 +11,12 @@
 #include "Node.h"
 #define uint unsigned int
 
+#include "../precompile/staticMesh_generated.h"
+
 using namespace std;
 namespace NBE
 {
-	//this is the same defines for 3ds max 2012
+	//this is the same defines for 3ds max 2016
 #define ID_AM 0   //!< Ambient 
 #define ID_DI 1   //!< Diffuse
 #define ID_SP 2   //!< Specular
@@ -111,9 +113,9 @@ namespace NBE
 		{return parent ? localTM * parent->getWorldTM() : localTM;}
 
 
-		MeshObject(String& nm)
+		MeshObject(string& nm)
 			:RenderObject(nm)
-			,meshObjecNode(new Node(nm + TEXT("_meshObjNode")))
+			,meshObjecNode(new Node(nm + "_meshObjNode"))
 			,localTMAnim(new KeyFrameContainer()),parent(NULL),isSkinMesh(false)
 			,skeletonVec(NULL),children(NULL)
 		{}
@@ -170,7 +172,7 @@ namespace NBE
 		{return parent ? boneAnim->frames[frameIndex].toMax4x4() * parent->getAnimWorldTM(frameIndex) :  boneAnim->frames[frameIndex].toMax4x4() ;}
 
 	};
-
+	/*
 	struct Mesh
 	{
 		vector<MeshObject*>* objectVec;
@@ -187,8 +189,36 @@ namespace NBE
 
 
 	};
+	*/
 
+	class NBE_API Mesh : public Object
+	{
+	public:
+		char* rawData;
+		bool bHidden;
+		int vbo_id;
+		int ibo_id;
 
+		Mesh(string& nm) : Object(nm), bHidden(false), vbo_id(-1), ibo_id(-1), rawData(nullptr)
+		{}
+		~Mesh()
+		{
+			delete[] rawData;
+		}
+	};
+
+	class NBE_API StaticMesh : public Mesh
+	{
+	public:
+		NBESTATICMESH::StaticMeshData* data;
+
+		StaticMesh(std::string nm):
+			Mesh(nm)
+		{}
+
+		~StaticMesh()
+		{}
+	};
 
 
 	class NBE_API MeshManager :public Singleton<MeshManager>
@@ -196,7 +226,8 @@ namespace NBE
 	public:
 		MeshManager();
 		~MeshManager();
-		Mesh* loadMeshFromFile(const String& fullPath);
+		//Mesh* loadMeshFromFile(const String& fullPath);
+		StaticMesh* loadStaticMeshFromFile(const String& fullPath);
 		//Mesh* loadMeshFromFile_stream(wchar_t* fileName);
 	private:
 		vector<Mesh*> m_pMeshVec;//store all the mesh data

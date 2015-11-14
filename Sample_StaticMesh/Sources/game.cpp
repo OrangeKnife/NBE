@@ -86,7 +86,7 @@ namespace NBEANIMATOIN
 
 
 
-		root = new Node(TEXT("root"), vec3f(), Matrix4f::Identity());
+		root = new Node("root", vec3f(), Matrix4f::Identity());
 
 		currentState = INGAME;
 
@@ -137,14 +137,21 @@ namespace NBEANIMATOIN
 		root->attachObject(map);
  */
 
-		Mesh* virgil = MeshManager::getInstancePtr()->loadMeshFromFile(TEXT("scenes\\virgil.n3d"));
-		for (uint i = 0; i < virgil->objectVec->size(); ++i)
-		{
-			m_pRenderer->createVBO(virgil->objectVec->at(i), sizeof(PTNC_Vertex), generalShader, "PTNC");
-			m_pRenderer->createIBO(virgil->objectVec->at(i));
-			root->addAChindNode(virgil->objectVec->at(i)->meshObjecNode);//attachObject(virgil->objectVec->at(i));
+		//Mesh* virgil = MeshManager::getInstancePtr()->loadMeshFromFile(TEXT("scenes\\virgil.n3d"));
+		auto virgilStatic = MeshManager::getInstancePtr()->loadStaticMeshFromFile(TEXT("scenes\\sponza.n3d"));
+		m_pRenderer->createVBO((void*)virgilStatic->data->vertices()->Data(), sizeof(PNCT_Vertex), virgilStatic->data->vertices()->size(), generalShader, "PNCT");
+		m_pRenderer->createIBO((void*)virgilStatic->data->indices()->Data(), virgilStatic->data->indices()->size());
 
-		}
+		Node* virgilNode = new Node("VirgilStaticNode");
+		virgilNode->attachObject(virgilStatic);
+		root->addAChindNode(virgilNode);
+		//for (uint i = 0; i < virgil->objectVec->size(); ++i)
+		//{
+		//	m_pRenderer->createVBO(virgil->objectVec->at(i), sizeof(PTNC_Vertex), generalShader, "PTNC");
+		//	m_pRenderer->createIBO(virgil->objectVec->at(i));
+		//	root->addAChindNode(virgil->objectVec->at(i)->meshObjecNode);//attachObject(virgil->objectVec->at(i));
+
+		//}
 
 		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key('W', NEvent_Key::KEY_DOWN), this, (void*)('W'));
 		ADDCLASSCALLBACK(NEvent_Key, Game, handleMovementEvent, NEvent_Key('A', NEvent_Key::KEY_DOWN), this, (void*)('A'));
@@ -164,7 +171,6 @@ namespace NBEANIMATOIN
 		shaderMgr->deleteInstance();
 
 		MeshManager::deleteInstance();
-
 
 		delete root;
 	}
@@ -262,8 +268,11 @@ namespace NBEANIMATOIN
 				Node::ObjectMap objs = current->getObjects();
 				for (auto it = objs.begin(); it != objs.end(); ++it)
 				{
+					//yao
+					//if ((*it).second->isRenderable())
+					//	drawObj(reinterpret_cast<RenderObject*>(it->second), current->getWorldTM());
 					if ((*it).second->isRenderable())
-						drawObj(reinterpret_cast<RenderObject*>(it->second), current->getWorldTM());
+						drawStaticMesh(reinterpret_cast<StaticMesh*>(it->second)->data, current->getWorldTM());
 				}
 
 				m_renderQueue.pop_front();
@@ -346,7 +355,7 @@ namespace NBEANIMATOIN
 
 	void Game::initCamera(float asp) {
 		//camera
-		m_pCamera.reset(new Camera(TEXT("cam1")));
+		m_pCamera.reset(new Camera("cam1"));
 
 		m_pCamera->setPosition(vec3f(0, 0, 350));
 		m_pCamera->updateViewMatrix();
@@ -365,6 +374,41 @@ namespace NBEANIMATOIN
 		new KeyBoard();
 	}
 
+	void Game::drawStaticMesh(const NBESTATICMESH::StaticMeshData* data, Matrix4f& transform)
+	{
+		for (size_t i = 0; i < data->batches()->size(); ++i)
+		{
+			auto aBatch = data->batches()->Get(i);
+			int shader = generalShader;
+			m_pRenderer->applyShader(shader);
+			m_pRenderer->applyMatrix(shader, "viewMat", m_pCamera->getViewMatrix());
+			m_pRenderer->applyMatrix(shader, "projMat", m_pCamera->getProjection());
+
+			auto mats = data->materials();
+			int diffTex = -1;
+			
+			if (mats->size() > 0 && aBatch->materialId() >= 0)
+			{
+				if(mats->Get(aBatch->materialId())->textureMaps()->size() >0)
+					diffTex = mats->Get(aBatch->materialId())->textureMaps()->Get(0)->texId();
+			}
+
+			if (diffTex >= 0)
+				m_pRenderer->applyTexture(shader, "diftex", diffTex, 0);
+			else
+				m_pRenderer->applyTexture(shader, "diftex", 0, 0);
+			m_pRenderer->bindVertexBuffer(0, sizeof(PNCT_Vertex), 0, ShaderManager::getInstancePtr()->getShaderByIdx(shader));
+			m_pRenderer->bindIndexBuffer(0);
+
+			drawStaticMeshBatch(aBatch, transform);
+		}
+	}
+
+	void Game::drawStaticMeshBatch(const NBESTATICMESH::Batch* bat, Matrix4f& worldMat)
+	{
+		m_pRenderer->applyMatrix(generalShader, "modelMat", worldMat);//
+		m_pRenderer->drawIndex(4, bat->size(), bat->startIndex(), 0);//4 == triangles
+	}
 	void Game::drawObj(RenderObject* obj, Matrix4f& transform) {
 
 		for (auto it = obj->batchVec->begin();
@@ -383,7 +427,7 @@ namespace NBEANIMATOIN
 				m_pRenderer->applyTexture(shader, "diftex", diffTex, 0);
 			else
 				m_pRenderer->applyTexture(shader, "diftex", 0, 0);
-			m_pRenderer->bindVertexBuffer(obj->vbo_id, sizeof(PTNC_Vertex), 0, ShaderManager::getInstancePtr()->getShaderByIdx(shader));
+			m_pRenderer->bindVertexBuffer(obj->vbo_id, sizeof(PNCT_Vertex), 0, ShaderManager::getInstancePtr()->getShaderByIdx(shader));
 			m_pRenderer->bindIndexBuffer(obj->ibo_id);
 
 

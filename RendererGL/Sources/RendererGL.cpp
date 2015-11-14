@@ -240,58 +240,63 @@ namespace NBE
 		return newSh;
 	}
 
-	void RendererGL::createVBO(RenderObject* ro, uint verSize ,uint shIdx, char* fmt)
-	{
-		GLuint vbo;
-		uint length = ro->VertexNum;
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, length * verSize, ro->vbo, GL_STATIC_DRAW);
-		m_vbuffVec.push_back(vbo);
+	void RendererGL::createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt)
+	{}
+	void RendererGL::createIBO(void* indicesData, uint indexNum)
+	{}
+
+	//void RendererGL::createVBO(RenderObject* ro, uint verSize ,uint shIdx, char* fmt)
+	//{
+	//	GLuint vbo;
+	//	uint length = ro->VertexNum;
+	//	glGenBuffers(1, &vbo);
+	//	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	//	glBufferData(GL_ARRAY_BUFFER, length * verSize, ro->vbo, GL_STATIC_DRAW);
+	//	m_vbuffVec.push_back(vbo);
 
 
-		int len = strlen(fmt);
-		GL_INPUT_ELEMENT_DES* decl = new GL_INPUT_ELEMENT_DES[len];
-		memset(decl, 0, sizeof(GL_INPUT_ELEMENT_DES)*len);
-		uint offset = 0;//, semidx = 0;
+	//	int len = strlen(fmt);
+	//	GL_INPUT_ELEMENT_DES* decl = new GL_INPUT_ELEMENT_DES[len];
+	//	memset(decl, 0, sizeof(GL_INPUT_ELEMENT_DES)*len);
+	//	uint offset = 0;//, semidx = 0;
 
-		for(int i = 0; i<len; i++)
-		{
-			GL_INPUT_ELEMENT_DES& d = decl[i];
-			d.OffsetBytes = offset;
+	//	for(int i = 0; i<len; i++)
+	//	{
+	//		GL_INPUT_ELEMENT_DES& d = decl[i];
+	//		d.OffsetBytes = offset;
 
-			switch(fmt[i])
-			{
-			case 'P': d.Format = GL_FLOAT; offset += 12; break;
-			case 'T': d.Format = GL_FLOAT; offset +=  8; break;
-			case 'N': d.Format = GL_FLOAT; offset += 12; break;
-			case 'C': d.Format = GL_FLOAT; offset += 16; break;
-			case 'G': d.Format = GL_FLOAT; offset += 12; break;//tangent
-			case 'B': d.Format = GL_FLOAT; offset += 12; break;//bitangent
-			case 'I':d.Format = GL_FLOAT; offset += 16; break;//bone indices
-			case 'W':d.Format = GL_FLOAT; offset += 16; break;//bone weight
-			default: myassert(0);
-			}
-		}
+	//		switch(fmt[i])
+	//		{
+	//		case 'P': d.Format = GL_FLOAT; offset += 12; break;
+	//		case 'T': d.Format = GL_FLOAT; offset +=  8; break;
+	//		case 'N': d.Format = GL_FLOAT; offset += 12; break;
+	//		case 'C': d.Format = GL_FLOAT; offset += 16; break;
+	//		case 'G': d.Format = GL_FLOAT; offset += 12; break;//tangent
+	//		case 'B': d.Format = GL_FLOAT; offset += 12; break;//bitangent
+	//		case 'I':d.Format = GL_FLOAT; offset += 16; break;//bone indices
+	//		case 'W':d.Format = GL_FLOAT; offset += 16; break;//bone weight
+	//		default: myassert(0);
+	//		}
+	//	}
 
-		GL_LAYOUT* lay = new GL_LAYOUT(len,decl);
-		m_layoutVec.push_back(lay);
+	//	GL_LAYOUT* lay = new GL_LAYOUT(len,decl);
+	//	m_layoutVec.push_back(lay);
 
 
-		delete[] decl;
-		ro->vbo_id = m_vbuffVec.size()-1;
-	}
+	//	delete[] decl;
+	//	ro->vbo_id = m_vbuffVec.size()-1;
+	//}
 
-	void RendererGL::createIBO(RenderObject* ro)
-	{
-		GLuint ibo;
-		uint length = ro->ibo.size();
-		glGenBuffers(1, &ibo);
-		glBindBuffer(GL_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof( uint ) * length, &ro->ibo.front(), GL_STATIC_DRAW);
-		m_ibuffVec.push_back(ibo);
-		ro->ibo_id = m_ibuffVec.size()-1;
-	}
+	//void RendererGL::createIBO(RenderObject* ro)
+	//{
+	//	GLuint ibo;
+	//	uint length = ro->ibo.size();
+	//	glGenBuffers(1, &ibo);
+	//	glBindBuffer(GL_ARRAY_BUFFER, ibo);
+	//	glBufferData(GL_ARRAY_BUFFER, sizeof( uint ) * length, &ro->ibo.front(), GL_STATIC_DRAW);
+	//	m_ibuffVec.push_back(ibo);
+	//	ro->ibo_id = m_ibuffVec.size()-1;
+	//}
 	
 	bool RendererGL::updateVBO(uint vboIdx, void* newBuff, uint start, uint length,uint verSize)
 	{

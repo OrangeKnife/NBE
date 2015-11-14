@@ -1,3 +1,4 @@
+
 #include "GOAP.h"
 #include <tchar.h>
 #include <windows.h>

@@ -5,7 +5,7 @@ namespace NBE
 	//Object::Object(bool render):attachedNode(nullptr),renderable(render)
 	//{}
 
-	Object::Object(String& nm,bool render): name(nm),attachedNode(nullptr),
+	Object::Object(std::string& nm,bool render): name(nm),attachedNode(nullptr),
 		renderable(render)
 	{}
 
@@ -14,11 +14,16 @@ namespace NBE
 		//TODO: remove it from the node it attached
 	}
 
+	void Object::reName(const std::string& newNm)
+	{
+		name = newNm;
+	}
+
 	Node* Object::getAttachedNode()
 	{
 		return attachedNode;
 	}
-	String Object::getObjName()
+	const std::string Object::getObjName()
 	{
 		return name;
 	}

@@ -2,6 +2,7 @@
 #pragma comment (lib,"NBE.lib")
 #pragma comment (lib,"RendererGL.lib")
 #pragma comment (lib,"RenderSystemDX.lib")
+#define NOMINMAX
 #include <crtdbg.h>
 #include "RenderSystem.h"
 #include "Mouse.h"
@@ -30,6 +31,8 @@
 
 #include "EventHub.h"
 #include "CustomEvent.h"
+
+
 namespace NBE
 {
 

@@ -3,11 +3,11 @@
 
 namespace NBE
 {
-	Node::Node(const String& name,vec3f& pos,Matrix4f& transf)
+	Node::Node(const string& name,vec3f& pos,Matrix4f& transf)
 		:m_name(name),m_pos(pos),m_localRotMatrix(Matrix3f::Identity()),m_localTM(transf),m_parent(nullptr),m_flag(NodeInit)
 	{}
 	Node::Node()
-		:m_name(TEXT("")),m_pos(vec3f()),m_localTM(Matrix4f::Identity()),m_parent(nullptr),m_flag(NodeInit)
+		:m_name(""),m_pos(vec3f()),m_localTM(Matrix4f::Identity()),m_parent(nullptr),m_flag(NodeInit)
 	{}
 	Node::~Node()
 	{
@@ -25,7 +25,7 @@ namespace NBE
 		child->setParent(this);
 		return child;
 	}
-	Node* Node::removeChildNode(const String& name)
+	Node* Node::removeChildNode(const string& name)
 	{
 		auto it = m_ChildNodeMap.find(name);
 		if(it != m_ChildNodeMap.end())
@@ -51,7 +51,7 @@ namespace NBE
 
 	}
 	
-	Object* Node::detachObject(const String& name)
+	Object* Node::detachObject(const string& name)
 	{
 		auto it = m_objectMap.find(name);
 		if(it != m_objectMap.end())
@@ -68,7 +68,7 @@ namespace NBE
 	}
 
 
-	const String& Node::getName()
+	const string& Node::getName()
 	{
 		return m_name;
 	}

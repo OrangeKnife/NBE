@@ -57,7 +57,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Sample_GOAP\include\;$(SolutionDir)NBE\Headers\;C:\Ha\NBE\RendererGL\Headers;C:\Ha\NBE\RenderSystemDX\include;C:\Ha\NBE\lib\Effects11\Inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Sample_GOAP\include\;$(SolutionDir)NBE\Headers\;$(SolutionDir)RendererGL\Headers;$(SolutionDir)RenderSystemDX\include;$(SolutionDir)lib\Effects11\Inc\;$(SolutionDir)\..\flatbuffers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -74,7 +74,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Sample_GOAP\include\;$(SolutionDir)NBE\Headers\;C:\Ha\NBE\RendererGL\Headers;C:\Ha\NBE\RenderSystemDX\include;C:\Ha\NBE\lib\Effects11\Inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Sample_GOAP\include\;$(SolutionDir)NBE\Headers\;$(SolutionDir)RendererGL\Headers;$(SolutionDir)RenderSystemDX\include;$(SolutionDir)lib\Effects11\Inc\;$(SolutionDir)\..\flatbuffers\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

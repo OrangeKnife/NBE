@@ -10,7 +10,7 @@
 namespace NBE
 {
 
-	Camera::Camera(String camName):Object(camName,false),m_pos(0,0,0),m_direction(0,0,-1),m_up(0,1,0),
+	Camera::Camera(std::string camName):Object(camName,false),m_pos(0,0,0),m_direction(0,0,-1),m_up(0,1,0),
 		m_rotationMatrix(Matrix3f::Identity()),
 		m_lookAtNode(nullptr)
 

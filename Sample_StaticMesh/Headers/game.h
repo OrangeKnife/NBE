@@ -1,5 +1,5 @@
 #pragma once
-
+#define NOMINMAX
 #pragma comment (lib,"NBE.lib")
 #pragma comment (lib,"RendererGL.lib")
 #pragma comment (lib,"RenderSystemDX.lib")
@@ -38,6 +38,7 @@
 
 #include "EventHub.h"
 #include "CustomEvent.h"
+#include "Mesh.h"
 
 using namespace NBE;
 namespace NBEANIMATOIN
@@ -64,6 +65,10 @@ namespace NBEANIMATOIN
 		void updateFrame();
 		void drawBatch(Batch* bat, Matrix4f& worldMat);
 		void drawObj(RenderObject* obj, Matrix4f& transform);
+
+
+		void drawStaticMeshBatch(const NBESTATICMESH::Batch* bat, Matrix4f& worldMat);
+		void drawStaticMesh(const NBESTATICMESH::StaticMeshData* data, Matrix4f& transform);
 		 
 		void handleMovementEvent(NEvent_Key* eventData, void* p);
 		
@@ -96,6 +101,5 @@ namespace NBEANIMATOIN
 		std::list<Node*> m_renderQueue;
 
 		uint generalShader;
-
 	};
 }

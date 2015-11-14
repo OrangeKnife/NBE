@@ -46,14 +46,14 @@ namespace NBE
 		{}
 	};
 
-	struct PTNC_Vertex:Vertex
+	struct PNCT_Vertex:Vertex
 	{
 		vec3f pos;
-		vec2f texcoord;
 		vec3f normal;
 		vec4f color;
+		vec2f texcoord;
 
-		PTNC_Vertex(vec3f _pos=vec3f(),vec2f _coord=vec2f(),
+		PNCT_Vertex(vec3f _pos=vec3f(),vec2f _coord=vec2f(),
 					vec3f _normal=vec3f(),vec4f _color=vec4f(0,0,0,1))
 			:pos(_pos)
 			,texcoord(_coord)

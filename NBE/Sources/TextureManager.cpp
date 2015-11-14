@@ -65,7 +65,9 @@ namespace NBE
 
 		if(IL_NO_ERROR != ilGetError())
 		{
-			throw NException(TextureDevilError, String(TEXT("IL Load From File Error:\n")) + szTexturePath);
+			NLOG("IL Load From File Error:\n",0);
+			return getDefaultTex();
+			//throw NException(TextureDevilError, String(TEXT("IL Load From File Error:\n")) + szTexturePath);
 		}
 
 		Texture* newTex = new Texture(szTexturePath,uniName);

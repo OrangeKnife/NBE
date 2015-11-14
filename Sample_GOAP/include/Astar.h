@@ -71,7 +71,7 @@ namespace NBE
 	struct AstarMap
 	{
 		//this is different from the Astar in project AstarMap, cuz it has multiple start point (means different npc in the map)
-		AstarMap(std::wstring& nm):width(0),height(0),mapName(nm),startNode(0)
+		AstarMap(std::string& nm):width(0),height(0),mapName(nm),startNode(0)
 		{
 			resource[MONEY] = new std::vector<Res>();
 			resource[WOLF] =  new std::vector<Res>();
@@ -121,7 +121,7 @@ namespace NBE
 		bool checkResourceExist2(int nodeType);
 		//bool updateResourceDisplay(uint idx, int newNodeType);//update idx node's nodeType to newNodeType
 
-		std::wstring mapName;
+		std::string mapName;
 		std::vector<AstarMapNode> nodesList;
 
 		uint width;

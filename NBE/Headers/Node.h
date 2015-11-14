@@ -23,20 +23,20 @@ namespace NBE
 	class NBE_API Node
 	{
 	public:
-		typedef unordered_map<String,Node*> ChildNodeMap;
-		typedef unordered_map<String,Object*> ObjectMap;
+		typedef unordered_map<std::string,Node*> ChildNodeMap;
+		typedef unordered_map<std::string,Object*> ObjectMap;
 
 		Node();
-		Node(const String& name,vec3f& pos= vec3f(),Matrix4f& transf = Matrix4f::Identity());
+		Node(const string& name,vec3f& pos= vec3f(),Matrix4f& transf = Matrix4f::Identity());
 		virtual ~Node();
 
-		const String& getName();
+		const string& getName();
 		
 		Node* addAChindNode(Node*);
-		Node* removeChildNode(const String& name);
+		Node* removeChildNode(const string& name);
 
 		Object* attachObject(Object* _obj);
-		Object* detachObject(const String& name);
+		Object* detachObject(const string& name);
 
 		virtual void update();
 		inline void moveLocal(const vec3f& localVector)
@@ -81,7 +81,7 @@ namespace NBE
 		ObjectMap m_objectMap;
 
 
-		String m_name;
+		string m_name;
 		Matrix4f m_transformation;//world TM, TODO when the node keep still, this keep still
 		Matrix4f m_localTM;//local transformation matrix
 

@@ -96,8 +96,11 @@ namespace NBE
 		void deleteBufferObjectData();
 
 
-		RenderObject(String& nm);
+		RenderObject(std::string& nm);
 		~RenderObject();
 	};
+
+
+	
 	
 }

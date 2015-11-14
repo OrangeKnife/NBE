@@ -45,6 +45,17 @@ namespace NBE
             int w_Len = MultiByteToWideChar(CP_ACP, 0, obj, len, strWchar, CHAR_TO_WCHAR_SIZE_MAX);
             return strWchar;
         }
+
+		static char* wcharToChar(const wchar_t* obj)
+		{
+			size_t len = wcslen(obj);
+
+			char* strChar = new char[len + 1];
+			size_t converted;
+			wcstombs_s(&converted, strChar, len + 1, obj, len + 1);
+			return strChar;
+		}
+
 		static String stringToString(std::string& str)
 		{
 #ifdef UNICODE

@@ -6,16 +6,17 @@ namespace NBE
 	{
 		friend class Node;
 	private:
-		String name;
+		std::string name;
 		Node* attachedNode;
 		bool renderable;
 	public:
 		//Object(bool render=true);
-		Object(String& nm,bool render=true);
+		Object(std::string& nm,bool render=true);
 		virtual ~Object();
 		inline bool isRenderable(){return renderable;}
 		Node* getAttachedNode();
-		String getObjName();
+		const std::string getObjName();
+		void reName(const std::string& newNm);
 		bool isAttached();
 	};
 }

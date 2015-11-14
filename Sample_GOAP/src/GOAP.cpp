@@ -1,3 +1,4 @@
+
 #include "GOAP.h"
 #include "RendererGL.h"
 #include "RendererDX11.h"
@@ -70,7 +71,7 @@ namespace NBE
 
 
 
-		root = new Node(TEXT("root"), vec3f(), Matrix4f::Identity());
+		root = new Node("root", vec3f(), Matrix4f::Identity());
 
 		currentState = INGAME;
 
@@ -97,8 +98,8 @@ namespace NBE
 
 	void GOAPapp::initCamera(float asp) {
 		//camera
-		m_pCamera.reset(new Camera(TEXT("cam1")));
-		auto cameraNode = new Node(TEXT("cameraNode1"));
+		m_pCamera.reset(new Camera("cam1"));
+		auto cameraNode = new Node("cameraNode1");
 		cameraNode->attachObject(m_pCamera.get());
 
 		m_pCamera->setLocalRotation(vec3f(-PI / 2, 0, 0));
@@ -390,16 +391,16 @@ namespace NBE
 
 		//load all the txt map
 
-		wchar_t* mapsname[TotalMaps] = { L"simulation.txt" };
+		char* mapsname[TotalMaps] = { "simulation.txt" };
 
 		for (int i = 0; i < TotalMaps; ++i)
 		{
-			std::ifstream* ifs = new std::ifstream(L"tests\\" + std::wstring(mapsname[i]));
+			std::ifstream* ifs = new std::ifstream("tests\\" + std::string(mapsname[i]));
 			char buffer[Map_MaxWidth];
 			ifs->getline(buffer, Map_MaxWidth);
 			uint w = strlen(buffer);// n
 			uint h = 0;
-			AstarMap* oneMap = new AstarMap(std::wstring(mapsname[i]));
+			AstarMap* oneMap = new AstarMap(std::string(mapsname[i]));
 
 			for (;; ++h, ifs->getline(buffer, Map_MaxWidth))
 			{
@@ -498,7 +499,7 @@ namespace NBE
 
 
 
-			oneMap->renderObj.reset(new RenderObject(String(mapsname[i])));
+			oneMap->renderObj.reset(new RenderObject(std::string(mapsname[i])));
 			oneMap->renderObj->vbo = new PT_Vertex[oneMap->vertices.size()];
 			oneMap->renderObj->VertexNum = oneMap->vertices.size();
 			memcpy_s(oneMap->renderObj->vbo, oneMap->renderObj->VertexNum * sizeof(PT_Vertex), &oneMap->vertices.front(), oneMap->renderObj->VertexNum * sizeof(PT_Vertex));

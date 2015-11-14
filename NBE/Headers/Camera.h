@@ -5,7 +5,7 @@ namespace NBE
 	class NBE_API Camera: public Object
 	{
 	public:
-		Camera(const String camName);
+		Camera(const std::string camName);
 		void handleKeyDown(int key);
 		void setPosition(const vec3f& position){m_pos = position;}
 		//void setDirection(const vec3f& direction){m_direction = direction;}
