@@ -240,10 +240,16 @@ namespace NBE
 		return newSh;
 	}
 
-	void RendererGL::createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt)
-	{}
-	void RendererGL::createIBO(void* indicesData, uint indexNum)
-	{}
+	int RendererGL::createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt)
+	{
+		//TODO implementation
+		return -1;
+	}
+	int RendererGL::createIBO(void* indicesData, uint indexNum)
+	{
+		//TODO implementation
+		return -1;
+	}
 
 	//void RendererGL::createVBO(RenderObject* ro, uint verSize ,uint shIdx, char* fmt)
 	//{

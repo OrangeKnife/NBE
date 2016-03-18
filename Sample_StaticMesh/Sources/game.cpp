@@ -397,8 +397,8 @@ namespace NBEANIMATOIN
 				m_pRenderer->applyTexture(shader, "diftex", diffTex, 0);
 			else
 				m_pRenderer->applyTexture(shader, "diftex", 0, 0);
-			m_pRenderer->bindVertexBuffer(0, sizeof(PNCT_Vertex), 0, ShaderManager::getInstancePtr()->getShaderByIdx(shader));
-			m_pRenderer->bindIndexBuffer(0);
+			m_pRenderer->bindVertexBuffer(0/*TODO use vbo id*/, sizeof(PNCT_Vertex), 0, ShaderManager::getInstancePtr()->getShaderByIdx(shader));
+			m_pRenderer->bindIndexBuffer(0/*TODO use ibo id*/);
 
 			drawStaticMeshBatch(aBatch, transform);
 		}

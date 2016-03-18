@@ -525,8 +525,8 @@ namespace NBE
 
 			oneMap->renderObj->IndexNum = oneMap->renderObj->ibo.size();
 
-			m_pRenderer->createVBO(oneMap->renderObj.get(), sizeof(PT_Vertex), m_shaderID, "PT");
-			m_pRenderer->createIBO(oneMap->renderObj.get());
+			oneMap->renderObj.get()->vbo_id = m_pRenderer->createVBO(oneMap->renderObj->vbo, sizeof(PT_Vertex), oneMap->renderObj.get()->VertexNum, m_shaderID, "PT");
+			oneMap->renderObj.get()->ibo_id = m_pRenderer->createIBO(oneMap->renderObj->ibo.data(),oneMap->renderObj->IndexNum);
 
 
 			m_maps.push_back(oneMap);

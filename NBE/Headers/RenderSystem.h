@@ -49,8 +49,8 @@ namespace NBE
 
         //virtual void createVBO(RenderObject* ro, uint verSize ,uint shIdx, char* fmt)=0;
         //virtual void createIBO(RenderObject* ro)=0;
-		virtual void createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt) = 0;
-		virtual void createIBO(void* indicesData, uint indexNum) = 0;
+		virtual int createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt) = 0;
+		virtual int createIBO(void* indicesData, uint indexNum) = 0;
         virtual bool updateVBO(uint vboIdx, void* newBuff, uint start, uint length,uint verSize)=0;
 
         virtual Shader* loadShader(const String& fileName, const char* format)=0;

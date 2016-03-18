@@ -60,8 +60,8 @@ namespace NBE
 		void applyFloat( uint shaderidx, char* variableName, float val );
 		void applyArray(uint shaderidx, char* variableName, uint arraySize, void* pArray, uint elementSize);
 
-		void createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt);
-		void createIBO(void* indicesData, uint indexNum);
+		int createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt);
+		int createIBO(void* indicesData, uint indexNum);
 		//void createVBO(RenderObject* ro, uint verSize ,uint shIdx, char* fmt);
 		//void createIBO(RenderObject* ro);
 		bool updateVBO(uint vboIdx, void* newBuff, uint start, uint length,uint verSize);

@@ -225,7 +225,7 @@ namespace NBE
 		}
 	}
 
-	void RendererDX11::createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt)
+	int RendererDX11::createVBO(void* verticesData, uint verSize, uint verNum, uint shIdx, char* fmt)
 	{
 		ID3D11Buffer* vbuff;
 		PNCT_Vertex* test = (PNCT_Vertex*)verticesData;
@@ -273,16 +273,16 @@ namespace NBE
 		m_inputLayoutVec.push_back(inputLayout);
 		m_vbuffVec.push_back(vbuff);
 		//vertex buffer and the layout have the same index in the vector
-		auto vbo_id = m_vbuffVec.size() - 1;
+		return m_vbuffVec.size() - 1;
 	}
-	void RendererDX11::createIBO(void* indicesData, uint indexNum)
+	int RendererDX11::createIBO(void* indicesData, uint indexNum)
 	{
 		ID3D11Buffer* ibuff;
 		D3D11_SUBRESOURCE_DATA srd = { indicesData, 0, 0 };
 		HV(m_currentDevice->CreateBuffer(&CD3D11_BUFFER_DESC(indexNum*sizeof(uint), D3D11_BIND_INDEX_BUFFER, D3D11_USAGE_IMMUTABLE), &srd, &ibuff));
 		//m_context->IASetIndexBuffer(ibuff, DXGI_FORMAT_R32_UINT, 0);
 		m_ibuffVec.push_back(ibuff);
-		auto ibo_id = m_ibuffVec.size() - 1;
+		return m_ibuffVec.size() - 1;
 	}
 
 	//void RendererDX11::createVBO(RenderObject* ro, uint verSize, uint shIdx, char* fmt)

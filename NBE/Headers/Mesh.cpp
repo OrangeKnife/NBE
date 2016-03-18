@@ -14,7 +14,7 @@ MeshManager::MeshManager()
 MeshManager::~MeshManager()
 {
 	vector<Mesh*>::iterator it = m_pMeshVec.begin();
-	for (;it!=m_pMeshVec.end();)
+	for (; it != m_pMeshVec.end();)
 	{
 		delete (*it);
 		it = m_pMeshVec.erase(it);
@@ -92,7 +92,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 	{
 		readAline();
 
-		string line = string(buffer); 
+		string line = string(buffer);
 		if (buffer[0] == '[')
 		{
 			size_t blacket = line.find_last_of(']');
@@ -107,10 +107,10 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 					readAline();
 
 					MeshObject* obj = new MeshObject(string(buffer));
-					
+
 					obj->meshObjecNode->attachObject(obj);
 					//matVec = new vector<Material*>();
-					
+
 
 					//obj->matVec = matVec;
 					batchVec = obj->batchVec;
@@ -201,7 +201,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 
 							if((int)tempIntArray[0] == -1)//means use mtl
 							{
-								Batch* bat = new Batch();  
+								Batch* bat = new Batch();
 								int MtlIdxInMtlLib = (int)tempIntArray[1];
 								if(MtlIdxInMtlLib >= 0)
 								{
@@ -221,7 +221,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 									tempFp->size = icount - tempFp->startIndex;
 									//this is a little tricky, but I don't need to count the number of indices using in the current material(in one obj)
 									//every time add a batch, change the former batch size; so only when next batch is recoreded,the former
-									//size is correct; the last batch size is right cuz indicesNum 
+									//size is correct; the last batch size is right cuz indicesNum
 								}
 								batchVec->push_back(bat); // this batchVec belongs to an obj, which get from -2 see codes down
 
@@ -238,7 +238,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 							//		tempFp->size = icount - tempFp->startIndex;
 							//		//this is a little tricky, but I don't need to count the number of indices using in the current material(in one obj)
 							//		//every time add a batch, change the former batch size; so only when next batch is recoreded,the former
-							//		//size is correct; the last batch size is right cuz indicesNum 
+							//		//size is correct; the last batch size is right cuz indicesNum
 							//	}
 							//	batchVec = ms->getObjInMeshByName(buffer)->batchVec ;
 							//}
@@ -277,7 +277,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 						SkinVertex* pStart = static_cast<SkinVertex*>(obj->vbo);
 						while(vcount < (unsigned int)verticesNum)
 						{
-							
+
 
 							fs->read((char*)(&pStart[vcount].pos),sizeof(vec3f));
 							fs->read((char*)(&pStart[vcount].normal),sizeof(vec3f));
@@ -302,12 +302,12 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 
 							if((int)tempIntArray[0] == -1)//means use mtl
 							{
-								Batch* bat = new Batch();  
+								Batch* bat = new Batch();
 
 								int MtlIdxInMtlLib = (int)tempIntArray[1];
 								if(MtlIdxInMtlLib >= 0)
 								{
-								 
+
 									bat->pMtl = (*ms->matVec)[MtlIdxInMtlLib];
 								}
 								else
@@ -325,7 +325,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 									tempFp->size = icount - tempFp->startIndex;
 									//this is a little tricky, but I don't need to count the number of indices using in the current material(in one obj)
 									//every time add a batch, change the former batch size; so only when next batch is recoreded,the former
-									//size is correct; the last batch size is right cuz indicesNum 
+									//size is correct; the last batch size is right cuz indicesNum
 								}
 								batchVec->push_back(bat); // this batchVec belongs to an obj, which get from -2 see codes down
 
@@ -356,8 +356,8 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 				else if (tag == string("material"))
 				{
 					//build the material lib
-					readAline(); 
-					Material* mat = new Material(string(buffer));  
+					readAline();
+					Material* mat = new Material(string(buffer));
 					matVec->push_back(mat);
 
 					int numOfbmp;
@@ -415,7 +415,7 @@ Mesh* MeshManager::loadMeshFromFile(const String& fullPath)
 
 			}
 		}
-	}	
+	}
 	fs->close();
 	delete fs;
 	delete[] buffer;
@@ -431,7 +431,7 @@ StaticMesh* MeshManager::loadStaticMeshFromFile(const String& fullPath)
 {
 	String currentPath = fullPath.substr(0, fullPath.find_last_of('\\') + 1);
 	ifstream* fs = FileIO::readFile(fullPath);
- 
+
 	std::streampos fileSize;
 
 	fs->seekg(0, std::ios::end);
@@ -443,7 +443,7 @@ StaticMesh* MeshManager::loadStaticMeshFromFile(const String& fullPath)
 	fs->seekg(0, std::ios::beg);
 	fs->read(newMesh->rawData, fileSize*sizeof(char));
 	fs->close();
-		
+
 	newMesh->data = NBESTATICMESH::GetMutableStaticMeshData(newMesh->rawData);
 	newMesh->reName(newMesh->data->staticMeshName()->str());
 
@@ -453,12 +453,11 @@ StaticMesh* MeshManager::loadStaticMeshFromFile(const String& fullPath)
 		for (uint j = 0; j < currentMat->textureMaps()->size(); ++j)
 		{
 			auto currentTex = currentMat->textureMaps()->Get(j);
-			String texMapFileName = TypeCast::stringToString( currentTex->texMapFileName()->str() );
-			const_cast<NBESTATICMESH::TexMap*>(currentTex)->mutate_texId( TextureManager::getInstancePtr()->LoadFromFile(currentPath + texMapFileName, texMapFileName)->textureIdx );
-			auto tsta=currentTex->texId();
+			String texMapFileName = TypeCast::stringToString(currentTex->texMapFileName()->str());
+			const_cast<NBESTATICMESH::TexMap*>(currentTex)->mutate_texId(TextureManager::getInstancePtr()->LoadFromFile(currentPath + texMapFileName, texMapFileName)->textureIdx);
 		}
 	}
-	
+
 	delete fs;
 
 	m_pMeshVec.push_back(newMesh);
