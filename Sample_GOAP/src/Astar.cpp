@@ -26,11 +26,11 @@ namespace NBE
 
 				if(newNode.nodeCode==SEMIBLOCKER)
 				{
-					newNode.H = calToEnd(newNode,targetEndNd) - 1 + (1 * 5) ;
+					newNode.H = /*newNode.G +*/ calToEnd(newNode,targetEndNd) - 1 + (1 * 5) ;
 				}
 				else
 				{
-					newNode.H = calToEnd(newNode,targetEndNd) - 1 + 1 ;
+					newNode.H = /*newNode.G +*/ calToEnd(newNode,targetEndNd) - 1 + 1 ;
 				}
 				newNode.nodeCode = OPEN;
 				//changeNodeTexInVBO(newNode);
