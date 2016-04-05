@@ -30,6 +30,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		delete app;
 		::MessageBox(nullptr, e.getInfo().c_str(), TEXT("Exception"), MB_OK | MB_ICONERROR);
 	}
+	catch (exception& e)
+	{
+		delete app;
+		::MessageBoxA(nullptr, e.what(), "Exception", MB_OK | MB_ICONERROR);
+	}
  
 	delete app;
 	return 0;
